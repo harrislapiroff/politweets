@@ -1,0 +1,10 @@
+version: '3'
+services:
+    postgres:
+        image: 'postgres:10.5-alpine'
+        restart: always
+        environment:
+            POSTGRES_USER: 'politweets'
+            POSTGRES_PASSWORD: 'politweets'
+        ports:
+            - '15432:5432'
