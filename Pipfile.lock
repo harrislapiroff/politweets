@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "7340703fab357681b2c40530baf59c3831d3186a4056e2cf776b35408636534f"
+            "sha256": "94a8b2edcbd19549af787ce24fbb389e023809b939f980af13202ffb817e5f83"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -61,6 +61,13 @@
             ],
             "version": "==2.7"
         },
+        "oauthlib": {
+            "hashes": [
+                "sha256:ac35665a61c1685c56336bda97d5eefa246f1202618a1d6f34fccb1bdd404162",
+                "sha256:d883b36b21a6ad813953803edfa563b1b579d79ca758fe950d1bc9e8b326025b"
+            ],
+            "version": "==2.1.0"
+        },
         "psycopg2": {
             "hashes": [
                 "sha256:0b9e48a1c1505699a64ac58815ca99104aacace8321e455072cee4f7fe7b2698",
@@ -111,6 +118,20 @@
             ],
             "index": "pypi",
             "version": "==2.19.1"
+        },
+        "requests-oauthlib": {
+            "hashes": [
+                "sha256:8886bfec5ad7afb391ed5443b1f697c6f4ae98d0e5620839d8b4499c032ada3f",
+                "sha256:e21232e2465808c0e892e0e4dbb8c2faafec16ac6dc067dd546e9b466f3deac8"
+            ],
+            "version": "==1.0.0"
+        },
+        "twitterapi": {
+            "hashes": [
+                "sha256:027d2f95cec33a238632617ab958e7c793d11e66a711c96315d4e4cf63d487a2"
+            ],
+            "index": "pypi",
+            "version": "==2.5.4"
         },
         "urllib3": {
             "hashes": [

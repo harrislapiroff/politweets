@@ -9,6 +9,7 @@ django-localflavor = "*"
 dj-database-url = "*"
 "psycopg2" = "*"
 requests = "*"
+twitterapi = "*"
 
 [dev-packages]
 ipdb = "*"
