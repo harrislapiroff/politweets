@@ -23,19 +23,19 @@ class Command(BaseCommand):
         api_base = options['api_base']
         api_key = options['api_key']
 
-        senators = sync_members_from_propublica(
+        senators = list(sync_members_from_propublica(
             '{}{}'.format(api_base, '115/senate/members.json'),
             api_key
-        )
-        representatives = sync_members_from_propublica(
+        ))
+        representatives = list(sync_members_from_propublica(
             '{}{}'.format(api_base, '115/house/members.json'),
             api_key
-        )
+        ))
 
-        new_senators = list(filter(lambda x: x[1] == True, senators))
-        new_representatives = list(filter(lambda x: x[1] == True, representatives))
-        up_senators = list(filter(lambda x: x[1] == False, senators))
-        up_representatives = list(filter(lambda x: x[1] == False, representatives))
+        new_senators = list(filter(lambda x: x[1] is True, senators))
+        new_representatives = list(filter(lambda x: x[1] is True, representatives))
+        up_senators = list(filter(lambda x: x[1] is False, senators))
+        up_representatives = list(filter(lambda x: x[1] is False, representatives))
 
         self.stdout.write('Synced:')
         self.stdout.write(
