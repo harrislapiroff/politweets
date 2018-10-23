@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 RE_HASHTAG = r'\B#\w*[a-zA-Z]+\w*'
 
 
-def quick_hashtag_count(tweets: 'QuerySet') -> Iterable[Tuple[str, int]]:
+def hashtag_counts(tweets: 'QuerySet') -> Iterable[Tuple[str, int]]:
     corpus = '\n'.join(tweets.values_list('text', flat=True))
     hashtags = re.findall(RE_HASHTAG, corpus)
 
