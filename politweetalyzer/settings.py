@@ -42,9 +42,22 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'webpack_loader',
 
     'politweets',
 ]
+
+STATICFILES_DIRS = [
+    # webpack generated files
+    os.path.join(BASE_DIR, 'assets'),
+]
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+            'BUNDLE_DIR_NAME': 'bundles/',
+            'STATS_FILE': os.path.join(BASE_DIR, 'client', 'webpack-stats.watch.json'),
+        }
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

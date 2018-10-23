@@ -1,0 +1,13 @@
+{% load render_bundle from webpack_loader %}
+
+<!doctype html>
+<html>
+	<head>
+		<title>What is congress tweeting about?</title>
+	</head>
+	<body>
+		{# React app target #}
+		<div id="root"></div>
+		{% render_bundle 'main' %}
+	</body>
+</html>
