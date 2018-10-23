@@ -13,7 +13,7 @@ def update_or_create_member(data: dict, chamber: str) -> Tuple[Member, bool]:
 
     if data['party'] == 'D':
         party = Member.DEMOCRAT
-    if data['party'] == 'R':
+    elif data['party'] == 'R':
         party = Member.REPUBLICAN
     else:
         party = Member.INDEPENDENT
