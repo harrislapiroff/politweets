@@ -26,6 +26,9 @@
 	font-size: 3rem;
 	margin: 0;
 	margin-bottom: 1rem;
+	padding-bottom: 1rem;
+	border-bottom: 1px solid #E5E5E5;
+	padding-left: 3rem;
 }
 .pane-title__highlight--democrat {
 	color: #08C;
@@ -36,7 +39,9 @@
 
 .hashtag-list {
 	font-size: 2rem;
-	margin: 0;
+	margin-top: 0;
+	margin-bottom: 0;
+	margin-left: 3rem;
 	padding: 0;
 	color: #999;
 }

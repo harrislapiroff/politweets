@@ -284,7 +284,7 @@ module.exports = {
 		// Generate stats file
 		new BundleTracker({
 			path: paths.statsRoot,
-			filename: 'webpack-stats.watch.json'
+			filename: 'dist/webpack-stats.watch.json'
 		}),
   ],
   // Some libraries import Node modules but don't use them in the browser.

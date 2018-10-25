@@ -8,3 +8,11 @@ services:
             POSTGRES_PASSWORD: 'politweets'
         ports:
             - '15432:5432'
+    webpack:
+        image: 'node:9.5.0-alpine'
+        restart: always
+        user: 'node'
+        command: 'npm run watch'
+        working_dir: /home/node/app
+        volumes:
+          - ./client:/home/node/app

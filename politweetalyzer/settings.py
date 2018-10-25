@@ -49,13 +49,13 @@ INSTALLED_APPS = [
 
 STATICFILES_DIRS = [
     # webpack generated files
-    os.path.join(BASE_DIR, 'assets'),
+    os.path.join(BASE_DIR, 'client', 'dist'),
 ]
 
 WEBPACK_LOADER = {
     'DEFAULT': {
-            'BUNDLE_DIR_NAME': 'bundles/',
-            'STATS_FILE': os.path.join(BASE_DIR, 'client', 'webpack-stats.watch.json'),
+            'BUNDLE_DIR_NAME': '',
+            'STATS_FILE': os.path.join(BASE_DIR, 'client', 'dist', 'webpack-stats.watch.json'),
         }
 }
 
