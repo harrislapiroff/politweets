@@ -19,7 +19,7 @@ def hashtag_counts(tweets: 'QuerySet') -> Iterable[Tuple[str, int]]:
     for hashtag, count in counter.most_common():
         capitalizations = filter(lambda x: x.lower() == hashtag, hashtags)
         capitalization_counter = Counter(capitalizations)
-        yield (
-            capitalization_counter.most_common(1)[0][0],
-            count
-        )
+        yield {
+            'tag': capitalization_counter.most_common(1)[0][0],
+            'count': count,
+        }
