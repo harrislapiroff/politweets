@@ -7,6 +7,7 @@ import * as serviceWorker from './serviceWorker';
 const rootElement = document.getElementById('root')
 const endpoints = {
 	summary: rootElement.dataset.apiSummary,
+	hashtag: rootElement.dataset.apiHashtag,
 }
 
 ReactDOM.render(<App endpoints={endpoints} />, rootElement);

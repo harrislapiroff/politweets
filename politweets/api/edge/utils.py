@@ -1,5 +1,8 @@
 from typing import TYPE_CHECKING
 
+from django.db.models import Count
+from django.db.models.functions import TruncHour, TruncDay
+
 from politweets.models import Member
 from politweets.utils.analysis.hashtags import hashtag_counts
 
@@ -7,22 +10,28 @@ if TYPE_CHECKING:
     from django.db.models import QuerySet  # NOQA: F401
 
 
-def analysis_suite(tweets: 'QuerySet'):
+def party_breakdown(tweets: 'QuerySet', func: callable) -> dict:
+    return {
+        'democrats': func(tweets.filter(member__party=Member.DEMOCRAT)),
+        'republicans': func(tweets.filter(member__party=Member.REPUBLICAN)),
+        'independents': func(tweets.filter(member__party=Member.INDEPENDENT)),
+    }
+
+
+def tweet_summary(tweets: 'QuerySet') -> dict:
     return {
         'total_tweets': tweets.count(),
         'popular_hashtags': list(hashtag_counts(tweets))[0:10],
     }
 
 
-def analysis_suite_by_party(tweets: 'QuerySet') -> dict:
-    return {
-        'democrats': analysis_suite(
-            tweets.filter(member__party=Member.DEMOCRAT)
-        ),
-        'republicans': analysis_suite(
-            tweets.filter(member__party=Member.REPUBLICAN)
-        ),
-        'independents': analysis_suite(
-            tweets.filter(member__party=Member.INDEPENDENT)
-        ),
-    }
+def hour_breakdown(tweets: 'QuerySet') -> 'QuerySet':
+    return tweets.annotate(
+        hour=TruncHour('time')
+    ).values('hour').annotate(count=Count('pk')).order_by('hour')
+
+
+def day_breakdown(tweets: 'QuerySet') -> 'QuerySet':
+    return tweets.annotate(
+        day=TruncDay('time')
+    ).values('day').annotate(count=Count('pk')).order_by('day')
