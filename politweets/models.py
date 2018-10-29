@@ -56,12 +56,12 @@ class Tweet(models.Model):
         related_name='tweets',
         on_delete=models.CASCADE,
     )
-    twitter_tweet_id = models.CharField(max_length=255, unique=True)
+    twitter_tweet_id = models.BigIntegerField(unique=True)
     time = models.DateTimeField()
     text = models.TextField()
     source = models.CharField(max_length=255)
     original_data = JSONField(blank=True, null=True)
 
     class Meta:
-        get_latest_by = 'time'
-        ordering = ['-time']
+        get_latest_by = 'twitter_tweet_id'
+        ordering = ['-twitter_tweet_id']
