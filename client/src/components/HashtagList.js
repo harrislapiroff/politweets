@@ -17,6 +17,7 @@ export default function HashtagList({
 	party,
 	loading,
 	expectedListSize,
+	onClickHashtag,
 }) {
 	return (
 		<div className="hashtag-list">
@@ -35,7 +36,11 @@ export default function HashtagList({
 					</li>
 				))}
 				{!loading && hashtags.map(x => (
-					<li className="hashtag-list__list-item" key={x.tag}>
+					<li
+						className="hashtag-list__list-item"
+						onClick={() => onClickHashtag(x.tag.slice(1))}
+						key={x.tag}
+					>
 						<span className="hashtag-list__hashtag">{x.tag}</span>
 						<span className="hashtag-list__count">{x.count} uses</span>
 					</li>
@@ -52,6 +57,7 @@ HashtagList.propTypes = {
 	})),
 	party: PropTypes.oneOf(['democrat', 'republican', 'independent']),
 	loading: PropTypes.bool,
+	onClickHashtag: PropTypes.func,
 	/** Expected size of list. Will be used for loading animation */
 	expectedListSize: PropTypes.number,
 }
@@ -61,4 +67,5 @@ HashtagList.defaultProps = {
 	party: 'independents',
 	loading: true,
 	expectedListSize: 10,
+	onClickHashtag: () => {},
 }

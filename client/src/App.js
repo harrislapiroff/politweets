@@ -4,14 +4,11 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import HashtagList from './components/HashtagList.js'
+import ErrorBoundary from './components/ErrorBoundary.js'
+import HashtagDetail from './containers/HashtagDetail.js'
+import { DATE_RANGE_OPTIONS } from './utils/date.js'
 
 import './App.css'
-
-const DATE_RANGE_OPTIONS = {
-	'past_day': 'Past 24 Hours',
-	'past_week': 'Past 7 Days',
-	'past_month': 'Past 30 Days',
-}
 
 class App extends Component {
 	constructor() {
@@ -21,9 +18,11 @@ class App extends Component {
 			loading: true,
 			summary: {},
 			dateRange: 'past_day',
+			selectedHashtag: null,
 		}
 
 		this.handleDateRangeChange = this.handleDateRangeChange.bind(this)
+		this.handleHashtagSelect = this.handleHashtagSelect.bind(this)
 	}
 
 	async componentDidMount() {
@@ -34,6 +33,10 @@ class App extends Component {
 
 	handleDateRangeChange(e) {
 		this.setState({ dateRange: e.target.value })
+	}
+
+	handleHashtagSelect(tag) {
+		this.setState({ selectedHashtag: tag })
 	}
 
 	render() {
@@ -57,6 +60,7 @@ class App extends Component {
 							hashtags={this.state.loading ? [] : dateForCurrentRange.democrats.popular_hashtags}
 							party="democrat"
 							loading={this.state.loading}
+							onClickHashtag={this.handleHashtagSelect}
 						/>
 					</div>
 					<div className="split-pane__column">
@@ -65,10 +69,20 @@ class App extends Component {
 								hashtags={this.state.loading ? [] : dateForCurrentRange.republicans.popular_hashtags}
 								party="republican"
 								loading={this.state.loading}
+								onClickHashtag={this.handleHashtagSelect}
 							/>
 						</div>
 					</div>
 				</div>
+				{this.state.selectedHashtag && (
+					<ErrorBoundary>
+						<HashtagDetail
+							hashtag={this.state.selectedHashtag}
+							api={this.props.endpoints.hashtag}
+							dateRange={this.state.dateRange}
+						/>
+					</ErrorBoundary>
+				)}
 			</div>
 		)
 	}
