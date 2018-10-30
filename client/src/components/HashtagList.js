@@ -25,7 +25,7 @@ export default function HashtagList({
 				<span
 					className={`hashtag-list__title-highlight hashtag-list__title-highlight--${party}`}
 				>
-					{PARTY_LABELS[party]}
+					{PARTY_LABELS[party]}s’
 				</span>{' '}
 				Hashtags
 			</h2>
