@@ -1,8 +1,12 @@
 FROM node:10.13.0-alpine
 WORKDIR /app/node/
+
 COPY ./client/package*.json /app/node/
 RUN npm install
+
 COPY ./client/config/ /app/node/config
 COPY ./client/scripts/ /app/node/scripts
-VOLUME ['./client/src/:/app/node/src', './client/dist:/app/node/dist']
+
+# The source and destination directories must be mounted as volumes at
+# /app/node/src and /app/node/dist, respectively
 CMD npm run watch

@@ -6,13 +6,24 @@ services:
         environment:
             POSTGRES_USER: 'politweets'
             POSTGRES_PASSWORD: 'politweets'
-        ports:
-            - '15432:5432'
     webpack:
         image: webpack-politweetalyzer
+        restart: always
         build:
             context: .
             dockerfile: ./docker/Dockerfile-webpack
         volumes:
             - ./client/src/:/app/node/src
-            - ./client/dist:/app/node/dist
+            - ./client/dist/:/app/node/dist
+    django:
+        image: django-politweetalyzer
+        restart: always
+        ports:
+            - 8000:8000
+        build:
+            context: .
+            dockerfile: ./docker/Dockerfile-django
+        volumes:
+            - ./:/app/django
+        depends_on:
+            - postgres

@@ -95,7 +95,7 @@ WSGI_APPLICATION = 'politweetalyzer.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgres://politweets:politweets@localhost:15432/politweets'
+        default='postgres://politweets:politweets@postgres:5432/politweets'
     )
 }
 
@@ -117,7 +117,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
