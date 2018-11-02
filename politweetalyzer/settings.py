@@ -144,3 +144,9 @@ TWITTER_CONSUMER_KEY = os.environ.get('TWITTER_CONSUMER_KEY', None)
 TWITTER_CONSUMER_SECRET = os.environ.get('TWITTER_CONSUMER_SECRET', None)
 TWITTER_ACCESS_TOKEN = os.environ.get('TWITTER_ACCESS_TOKEN', None)
 TWITTER_ACCESS_TOKEN_SECRET = os.environ.get('TWITTER_ACCESS_TOKEN_SECRET', None)
+
+# Put any settings overrides in settings_local.py
+try:
+    from .settings_local import *  # noqa: F403 F401
+except ImportError:
+    pass
