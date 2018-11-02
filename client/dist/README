@@ -1,0 +1,3 @@
+This directory exists as a target for compiled javascript and static files.
+Nothing in this directory should be committed to the repository besides
+this file.

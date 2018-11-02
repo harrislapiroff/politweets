@@ -1,4 +1,4 @@
-version: '3'
+version: '3.7'
 services:
     postgres:
         image: 'postgres:10.5-alpine'
@@ -8,3 +8,11 @@ services:
             POSTGRES_PASSWORD: 'politweets'
         ports:
             - '15432:5432'
+    webpack:
+        image: webpack-politweetalyzer
+        build:
+            context: .
+            dockerfile: ./docker/Dockerfile-webpack
+        volumes:
+            - ./client/src/:/app/node/src
+            - ./client/dist:/app/node/dist

@@ -1,0 +1,8 @@
+FROM node:10.13.0-alpine
+WORKDIR /app/node/
+COPY ./client/package*.json /app/node/
+RUN npm install
+COPY ./client/config/ /app/node/config
+COPY ./client/scripts/ /app/node/scripts
+VOLUME ['./client/src/:/app/node/src', './client/dist:/app/node/dist']
+CMD npm run watch
