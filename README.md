@@ -48,3 +48,38 @@ docker-compose exec django pipenv run ./manage.py sync_members
 # Sync new tweets to the database
 docker-compose exec django pipenv run ./manage.py sync_tweets
 ```
+
+Production Build
+----------------
+
+To build production assets run:
+
+```sh
+cd client
+npm install
+npm run build
+```
+
+To force Django to use the production assets, create a file `politweetalyzer/settings_local.py`:
+
+```python
+import os
+
+
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+            'BUNDLE_DIR_NAME': '',
+            'STATS_FILE': os.path.join(BASE_DIR, 'client', 'dist', 'webpack-stats.build.json'),
+        }
+}
+```
+
+Then run the Django server without the Webpack container:
+
+```sh
+docker-compose up django
+```
