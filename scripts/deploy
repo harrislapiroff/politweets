@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# Trigger a deployment to Heroku. This script is to be run locally
+# from a development machine.
+
+appdir=$(dirname $(dirname ${BASH_SOURCE[0]}))
+
+# Clear out the precompiled frontend assets and regenerate
+cd "$appdir/client"
+rm -rf dist/bundles
+rm dist/webpack-stats*.json
+npm install
+npm run build
+
+# Deploy to Heroku
+cd ..
+heroku container:push --recursive
+heroku container:release web

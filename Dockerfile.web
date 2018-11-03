@@ -1,0 +1,18 @@
+FROM python:3.7.1-alpine
+
+WORKDIR /app/django/
+
+# We need the Postgres client and pipenv installed
+RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev
+RUN pip install pipenv
+
+COPY ./Pipfile* /app/django/
+RUN pipenv install --deploy --system
+
+COPY ./politweetalyzer /app/django/politweetalyzer
+COPY ./politweets /app/django/politweets
+COPY ./client /app/django/client
+COPY ./manage.py /app/django/
+COPY ./scripts /app/django/scripts
+
+CMD ./scripts/runserver

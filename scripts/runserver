@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+# Run the Django server. This script is to be run from the live
+# Heroku container. It _must_ be run from the project root.
+
+./manage.py migrate
+gunicorn politweetalyzer.wsgi
