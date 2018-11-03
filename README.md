@@ -83,3 +83,22 @@ Then run the Django server without the Webpack container:
 ```sh
 docker-compose up django
 ```
+
+Deployment
+----------
+
+We use Heroku's container-based deployment. To run deployment commands, you
+must have [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
+installed and be logged in to [Heroku's container registry](https://devcenter.heroku.com/articles/container-registry-and-runtime#logging-in-to-the-registry). Then run:
+
+```sh
+scripts/deploy
+```
+
+This script will:
+
+1. Clear precompiled javascript and CSS out of `/client/dist`
+2. Reinstall node dependencies and run webpack to compile production-ready
+   javascript and Congress
+3. Push a docker image to the Heroku registry
+4. Release that docker image to the Heroku app

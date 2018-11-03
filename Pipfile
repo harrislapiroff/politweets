@@ -12,6 +12,8 @@ requests = "*"
 twitterapi = "*"
 django-rest-framework = "*"
 django-webpack-loader = "*"
+gunicorn = "*"
+whitenoise = "*"
 
 [dev-packages]
 ipdb = "*"
