@@ -1,9 +1,12 @@
 from politweets.api.edge import views
 from django.urls import path
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, RedirectView
+from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.views.decorators.cache import cache_page
 
 urlpatterns = [
+    path('favicon.ico', RedirectView.as_view(url=static('favicon.png'))),
+
     path(
         'api/edge/summary/',
         views.summary_view,
