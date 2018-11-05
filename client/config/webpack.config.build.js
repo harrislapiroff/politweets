@@ -154,6 +154,7 @@ module.exports = {
 					/\.(js|jsx)$/,
 					/\.css$/,
 					/\.json$/,
+					/\.(sass|scss)$/,
 				],
 				loader: require.resolve('file-loader'),
 				options: {

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 import LoadingBox from './LoadingBox.js'
 
-import './HashtagList.css'
+import './HashtagList.sass'
 
 const PARTY_LABELS = {
 	'democrat': 'Democrat',
