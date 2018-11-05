@@ -9,7 +9,7 @@ import ErrorBoundary from './components/ErrorBoundary.js'
 import HashtagDetail from './containers/HashtagDetail.js'
 import { DATE_RANGE_OPTIONS } from './utils/date.js'
 
-import './App.css'
+import './App.sass'
 
 class App extends Component {
 	constructor() {

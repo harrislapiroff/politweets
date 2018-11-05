@@ -1,5 +1,6 @@
 import { toPairs } from 'ramda'
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { DateTime } from 'luxon'
 import {
@@ -14,7 +15,7 @@ import ErrorBoundary from '../components/ErrorBoundary.js'
 import { DATE_RANGE_OPTIONS, getDateRange } from '../utils/date.js'
 import { PARTY_COLORS } from '../utils/parties.js'
 
-import './HashtagDetail.css'
+import './HashtagDetail.sass'
 
 function ISOtoDate(ISODate) {
 	return DateTime.fromISO(ISODate).toJSDate()
@@ -75,6 +76,9 @@ export default class HashtagDetail extends Component {
 
 		return (
 			<div className="hashtag-detail">
+				<Link className="hashtag-detail__close" to="/" title="close">
+					&times;
+				</Link>
 				<h1 className="hashtag-detail__title">
 					<span className="hashtag-detail__title-octothorpe">#</span>
 					<span className="hashtag-detail__title-hashtag">{this.props.hashtag}</span>{' '}
