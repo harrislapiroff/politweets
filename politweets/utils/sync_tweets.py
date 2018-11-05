@@ -1,5 +1,4 @@
 import datetime
-import json
 
 from django.conf import settings
 from TwitterAPI import TwitterAPI
@@ -8,7 +7,6 @@ from politweets.models import Tweet, Member
 
 SUCCESS = 'Success'
 ERROR = 'Error'
-
 
 
 api = TwitterAPI(
@@ -23,6 +21,7 @@ def sync_twitter_account(member: Member):
     params = {
         'screen_name': member.twitter,
         'count': 200,
+        'include_rts': False,
     }
     try:
         most_recent_tweet = member.tweets.latest()
@@ -46,7 +45,7 @@ def sync_twitter_account(member: Member):
             ),
             text=tweet['text'],
             source=tweet['source'],
-            original_data=json.dumps(tweet)
+            original_data=tweet
         ))
     return Tweet.objects.bulk_create(tweets)
 
