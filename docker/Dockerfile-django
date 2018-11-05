@@ -10,4 +10,4 @@ COPY ./Pipfile* /app/django/
 RUN pipenv install
 
 # The Django code must be provided as a volume mounted at /app/django
-CMD pipenv run ./manage.py runserver 0.0.0.0:8000
+CMD pipenv run ./manage.py migrate && pipenv run ./manage.py runserver 0.0.0.0:8000
