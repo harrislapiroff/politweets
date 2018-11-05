@@ -59,13 +59,11 @@ class App extends Component {
 							/>
 						</div>
 						<div className="split-pane__column">
-							<div className="pane-content">
-								<HashtagList
-									hashtags={this.state.loading ? [] : dateForCurrentRange.republicans.popular_hashtags}
-									party="republican"
-									loading={this.state.loading}
-								/>
-							</div>
+							<HashtagList
+								hashtags={this.state.loading ? [] : dateForCurrentRange.republicans.popular_hashtags}
+								party="republican"
+								loading={this.state.loading}
+							/>
 						</div>
 					</div>
 					<ErrorBoundary>
