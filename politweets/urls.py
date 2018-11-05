@@ -1,5 +1,5 @@
 from politweets.api.edge import views
-from django.urls import path
+from django.urls import path, re_path
 from django.views.generic import TemplateView, RedirectView
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.views.decorators.cache import cache_page
@@ -18,7 +18,7 @@ urlpatterns = [
         name='api_hashtag'
     ),
 
-    path('', cache_page(60*60*5)(
+    re_path(r'^.*', cache_page(60*60*5)(
         TemplateView.as_view(template_name="index.html")
     )),
 ]

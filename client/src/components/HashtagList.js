@@ -1,5 +1,6 @@
 import { range } from 'ramda'
 import React from 'react'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 import LoadingBox from './LoadingBox.js'
@@ -15,15 +16,17 @@ const PARTY_LABELS = {
 function HashtagListItemLoading() {
 	return (
 		<li className="hashtag-list__list-item">
-			<div
-				className="hashtag-list__loading-tag"
-				style={{
-					width: `${Math.random() * 20 + 20}%` // Between 20 and 40% wide
-				}}
-			>
-				<LoadingBox color="#DDD" />
+			<div className="hashtag-list__list-item-link">
+				<div
+					className="hashtag-list__loading-tag"
+					style={{
+						width: `${Math.random() * 20 + 20}%` // Between 20 and 40% wide
+					}}
+				>
+					<LoadingBox color="#DDD" />
+				</div>
+				<div className="hashtag-list__loading-count"><LoadingBox /></div>
 			</div>
-			<div className="hashtag-list__loading-count"><LoadingBox /></div>
 		</li>
 	)
 }
@@ -33,8 +36,11 @@ export default function HashtagList({
 	party,
 	loading,
 	expectedListSize,
-	onClickHashtag,
 }) {
+	const bareHashtags = hashtags.map(x => ({
+		tag: x.tag.slice(1),
+		count: x.count
+	}))
 	return (
 		<div className="hashtag-list">
 			<h2 className="hashtag-list__title">
@@ -47,14 +53,15 @@ export default function HashtagList({
 			</h2>
 			<ol className="hashtag-list__list">
 				{loading && range(0, 10).map(x => <HashtagListItemLoading key={x} />)}
-				{!loading && hashtags.map(x => (
+				{!loading && bareHashtags.map(x => (
 					<li
 						className="hashtag-list__list-item"
-						onClick={() => onClickHashtag(x.tag.slice(1))}
 						key={x.tag}
 					>
-						<span className="hashtag-list__hashtag">{x.tag}</span>
-						<span className="hashtag-list__count">{x.count} uses</span>
+						<Link className="hashtag-list__list-item-link" to={`/hashtag/${x.tag}`}>
+							<span className="hashtag-list__hashtag">#{x.tag}</span>
+							<span className="hashtag-list__count">{x.count} uses</span>
+						</Link>
 					</li>
 				))}
 			</ol>
@@ -69,7 +76,6 @@ HashtagList.propTypes = {
 	})),
 	party: PropTypes.oneOf(['democrat', 'republican', 'independent']),
 	loading: PropTypes.bool,
-	onClickHashtag: PropTypes.func,
 	/** Expected size of list. Will be used for loading animation */
 	expectedListSize: PropTypes.number,
 }
@@ -79,5 +85,4 @@ HashtagList.defaultProps = {
 	party: 'independents',
 	loading: true,
 	expectedListSize: 10,
-	onClickHashtag: () => {},
 }

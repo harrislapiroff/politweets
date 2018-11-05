@@ -2,6 +2,7 @@ import { toPairs } from 'ramda'
 
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { BrowserRouter, Route } from "react-router-dom";
 
 import HashtagList from './components/HashtagList.js'
 import ErrorBoundary from './components/ErrorBoundary.js'
@@ -18,11 +19,9 @@ class App extends Component {
 			loading: true,
 			summary: {},
 			dateRange: 'past_day',
-			selectedHashtag: null,
 		}
 
 		this.handleDateRangeChange = this.handleDateRangeChange.bind(this)
-		this.handleHashtagSelect = this.handleHashtagSelect.bind(this)
 	}
 
 	async componentDidMount() {
@@ -35,55 +34,54 @@ class App extends Component {
 		this.setState({ dateRange: e.target.value })
 	}
 
-	handleHashtagSelect(tag) {
-		this.setState({ selectedHashtag: tag })
-	}
-
 	render() {
 		const dateForCurrentRange = this.state.summary[this.state.dateRange]
 
 		return (
-			<div className="App">
-				<h1 className="site-title">
-					What is congress tweeting about?
-				</h1>
-				<select value={this.state.dateRange} onChange={this.handleDateRangeChange}>
-					{toPairs(DATE_RANGE_OPTIONS).map(option => (
-						<option value={option[0]} key={option[0]}>
-							{option[1]}
-						</option>
-					))}
-				</select>
-				<div className="split-pane">
-					<div className="split-pane__column">
-						<HashtagList
-							hashtags={this.state.loading ? [] : dateForCurrentRange.democrats.popular_hashtags}
-							party="democrat"
-							loading={this.state.loading}
-							onClickHashtag={this.handleHashtagSelect}
-						/>
-					</div>
-					<div className="split-pane__column">
-						<div className="pane-content">
+			<BrowserRouter>
+				<div className="App">
+					<h1 className="site-title">
+						What is congress tweeting about?
+					</h1>
+					<select value={this.state.dateRange} onChange={this.handleDateRangeChange}>
+						{toPairs(DATE_RANGE_OPTIONS).map(option => (
+							<option value={option[0]} key={option[0]}>
+								{option[1]}
+							</option>
+						))}
+					</select>
+					<div className="split-pane">
+						<div className="split-pane__column">
 							<HashtagList
-								hashtags={this.state.loading ? [] : dateForCurrentRange.republicans.popular_hashtags}
-								party="republican"
+								hashtags={this.state.loading ? [] : dateForCurrentRange.democrats.popular_hashtags}
+								party="democrat"
 								loading={this.state.loading}
-								onClickHashtag={this.handleHashtagSelect}
 							/>
 						</div>
+						<div className="split-pane__column">
+							<div className="pane-content">
+								<HashtagList
+									hashtags={this.state.loading ? [] : dateForCurrentRange.republicans.popular_hashtags}
+									party="republican"
+									loading={this.state.loading}
+								/>
+							</div>
+						</div>
 					</div>
-				</div>
-				{this.state.selectedHashtag && (
 					<ErrorBoundary>
-						<HashtagDetail
-							hashtag={this.state.selectedHashtag}
-							api={this.props.endpoints.hashtag}
-							dateRange={this.state.dateRange}
+						<Route
+							path="/hashtag/:hashtag"
+							render={(props) => (
+								<HashtagDetail
+									hashtag={props.match.params.hashtag}
+									api={this.props.endpoints.hashtag}
+									dateRange={this.state.dateRange}
+								/>
+							)}
 						/>
 					</ErrorBoundary>
-				)}
-			</div>
+				</div>
+			</BrowserRouter>
 		)
 	}
 }
