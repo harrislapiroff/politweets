@@ -6,6 +6,8 @@ services:
         environment:
             POSTGRES_USER: 'politweets'
             POSTGRES_PASSWORD: 'politweets'
+        ports:
+            - 15432:5432
     webpack:
         image: webpack-politweetalyzer
         restart: always

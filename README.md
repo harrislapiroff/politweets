@@ -18,6 +18,8 @@ This will spin up Postgres, Webpack, and Django services.
 
 You can access the application from your web browser at: http://localhost:8000/
 
+You can connect to the PostgreSQL database at `postgres://politweets:politweets@localhost:15432/politweets`
+
 Getting the Data
 ----------------
 
