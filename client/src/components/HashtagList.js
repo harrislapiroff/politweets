@@ -60,7 +60,9 @@ export default function HashtagList({
 					>
 						<Link className="hashtag-list__list-item-link" to={`/hashtag/${x.tag}`}>
 							<span className="hashtag-list__hashtag">#{x.tag}</span>
-							<span className="hashtag-list__count">{x.count} uses</span>
+							<span className="hashtag-list__count">
+								<span className="hashtag-list__count-number">{x.count}</span> uses
+							</span>
 						</Link>
 					</li>
 				))}
