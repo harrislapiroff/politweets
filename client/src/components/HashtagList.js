@@ -12,6 +12,22 @@ const PARTY_LABELS = {
 	'independent': 'Independent',
 }
 
+function HashtagListItemLoading() {
+	return (
+		<li className="hashtag-list__list-item">
+			<div
+				className="hashtag-list__loading-tag"
+				style={{
+					width: `${Math.random() * 20 + 20}%` // Between 20 and 40% wide
+				}}
+			>
+				<LoadingBox color="#DDD" />
+			</div>
+			<div className="hashtag-list__loading-count"><LoadingBox /></div>
+		</li>
+	)
+}
+
 export default function HashtagList({
 	hashtags,
 	party,
@@ -30,11 +46,7 @@ export default function HashtagList({
 				Hashtags
 			</h2>
 			<ol className="hashtag-list__list">
-				{loading && range(0, 10).map(x => (
-					<li className="hashtag-list__list-item" key={x}>
-						<LoadingBox />
-					</li>
-				))}
+				{loading && range(0, 10).map(x => <HashtagListItemLoading key={x} />)}
 				{!loading && hashtags.map(x => (
 					<li
 						className="hashtag-list__list-item"

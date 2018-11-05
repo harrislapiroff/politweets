@@ -1,17 +1,18 @@
 @-webkit-keyframes loadingBoxShimmer {
 	0% {
-		background-color: #F0F0F0;
+		opacity: 1;
 	}
 
 	100% {
-		background-color: #FAFAFA;
+		opacity: 0.5;
 	}
 }
 
 .loading-box {
-	background-color: #F0F0F0;
-	animation-duration: 0.5s;
+	animation-duration: 350ms;
 	animation-iteration-count: infinite;
 	animation-name: loadingBoxShimmer;
-	animation-timing-function: linear;
+	animation-timing-function: ease-in;
+	animation-direction: alternate;
+	border-radius: 4px;
 }
