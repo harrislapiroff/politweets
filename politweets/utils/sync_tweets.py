@@ -21,6 +21,7 @@ def sync_twitter_account(member: Member):
     params = {
         'screen_name': member.twitter,
         'count': 200,
+        'include_rts': False,
     }
     try:
         most_recent_tweet = member.tweets.latest()
