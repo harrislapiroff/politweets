@@ -95,19 +95,19 @@ export default class HashtagDetail extends Component {
 					>
 						<VictoryGroup
 							colorScale={chartDataAsPairs.map(x => PARTY_COLORS[x[0]])}
-							labels={d => `Tweets: ${d.y}`}
-							labelComponent={
-								<VictoryTooltip
-									style={{ fontSize: 10 }}
-								/>
-							}
-							style={{data: { width: 8 }}}
-							offset={10}
+							style={{data: { width: 12 }}}
+							offset={14}
 						>
 							{chartDataAsPairs.map(x => (
 									<VictoryBar
 										key={x[0]}
 										data={x[1]}
+										labels={d => `Tweets: ${d.y}`}
+										labelComponent={
+											<VictoryTooltip
+												style={{ fontSize: 10 }}
+											/>
+										}
 									/>
 							))}
 						</VictoryGroup>
