@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import './LoadingBox.css'
+import './LoadingBox.sass'
 
 export default function LoadingBox ({ color }) {
 	return (
