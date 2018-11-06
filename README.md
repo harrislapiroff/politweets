@@ -28,7 +28,7 @@ To get data, you will need access to both the ProPublica Congress API and the Tw
 * [Request access to the ProPublica Congress API](https://projects.propublica.org/api-docs/congress-api/)
 * [Create a Twitter App to get Twitter API credentials](https://developer.twitter.com/en/apps)
 
-Once you have your credentials, create a `.env` file in the root of the repository. This file is ignored by git to prevent you from publishing your secret keys. The `.env` file should look like this:
+Once you have your credentials, you will need an `.env` file in the root of the repository with them. This file is ignored by git to prevent you from publishing your secret keys. You can either create an `.env` file with this format:
 
 ```sh
 PROPUBLICA_API_KEY='XXXXXXXXXX'
@@ -38,6 +38,12 @@ TWITTER_CONSUMER_KEY='XXXXXXXXXX'
 TWITTER_CONSUMER_SECRET='XXXXXXXXXX'
 TWITTER_ACCESS_TOKEN='XXXXXXXXXX'
 TWITTER_ACCESS_TOKEN_SECRET='XXXXXXXXXX'
+```
+
+Or you can run this script to run through the automated setup wizard:
+
+```sh
+scripts/setup
 ```
 
 You may need to restart `docker-compose` after creating this file.

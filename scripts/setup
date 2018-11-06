@@ -1,25 +1,32 @@
+#!/usr/bin/env bash
+
+# Run a question and answer script that populates an env file for a development
+# environment. This is designed to be run locally from a development machine.
+
+appdir=$(dirname $(dirname ${BASH_SOURCE[0]}))
+
 echo "ProPublica API key?"
-echo -n "> " 
+echo -n "> "
 read resp
 PP_API_KEY=${resp}
 
 echo "Twitter consumer key?"
-echo -n "> " 
+echo -n "> "
 read resp
 TW_CONSUMER_KEY=${resp}
 
 echo "Twitter consumer secret?"
-echo -n "> " 
+echo -n "> "
 read resp
 TWITTER_CONSUMER_SECRET=${resp}
 
 echo "Twitter access token?"
-echo -n "> " 
+echo -n "> "
 read resp
 TW_ACCESS_TOKEN=${resp}
 
 echo "Twitter access token secret?"
-echo -n "> " 
+echo -n "> "
 read resp
 TW_ACCESS_TOKEN_SECRET=${resp}
 
@@ -30,4 +37,4 @@ TWITTER_CONSUMER_KEY='${TW_CONSUMER_KEY}'
 TWITTER_CONSUMER_SECRET='${TWITTER_CONSUMER_SECRET}'
 TWITTER_ACCESS_TOKEN='${TW_ACCESS_TOKEN}'
 TWITTER_ACCESS_TOKEN_SECRET='${TW_ACCESS_TOKEN_SECRET}'
-" > .env
+" > "${appdir}/.env"
