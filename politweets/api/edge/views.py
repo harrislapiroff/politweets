@@ -46,9 +46,7 @@ class HashtagDetailView(APIView):
         * the past week of tweets using hashtag, broken down by day
         * the past month of tweets using hashtag, broken down by day
         """
-        hashtagged_tweets = Tweet.objects.filter(
-            text__icontains='#{}'.format(hashtag)
-        )
+        hashtagged_tweets = Tweet.objects.with_hashtag(hashtag)
 
         past_day_tweets = hashtagged_tweets.filter(
             time__gte=datetime.datetime.now() - datetime.timedelta(days=1),

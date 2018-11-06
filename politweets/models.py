@@ -3,6 +3,9 @@ from django.db import models
 from localflavor.us.models import USStateField
 
 
+RE_HASHTAG_FORMAT = r'(^|\s)#{}\M'
+
+
 class Member(models.Model):
     SENATE = 'S'
     HOUSE = 'H'
@@ -50,6 +53,15 @@ class Member(models.Model):
         )
 
 
+class TweetQuerySet(models.QuerySet):
+    def with_hashtag(self, hashtag: str, case_sensitive: bool = False):
+        if (hashtag[0] == '#'):
+            hashtag = hashtag[1:]
+        keyword = 'text__iregex' if not case_sensitive else 'text__regex'
+        value = RE_HASHTAG_FORMAT.format(hashtag)
+        return self.filter(**{keyword: value})
+
+
 class Tweet(models.Model):
     member = models.ForeignKey(
         Member,
@@ -61,6 +73,8 @@ class Tweet(models.Model):
     text = models.TextField()
     source = models.CharField(max_length=255)
     original_data = JSONField(blank=True, null=True)
+
+    objects = models.Manager.from_queryset(TweetQuerySet)()
 
     class Meta:
         get_latest_by = 'twitter_tweet_id'
