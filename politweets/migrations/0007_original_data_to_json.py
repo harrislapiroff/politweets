@@ -7,9 +7,11 @@ from django.db import migrations
 
 def tweet_data_to_json(tweet):
     stringy_json = tweet.original_data
-    object_json = json.loads(stringy_json)
-    tweet.original_data = object_json
-    tweet.save()
+    # If it's a string, convert it. Otherwise, do nothing.
+    if isinstance(stringy_json, str):
+        object_json = json.loads(stringy_json)
+        tweet.original_data = object_json
+        tweet.save()
 
 
 def tweet_data_to_string(tweet):
