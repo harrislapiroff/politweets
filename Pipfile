@@ -15,10 +15,12 @@ django-webpack-loader = "*"
 gunicorn = "*"
 whitenoise = "*"
 factory-boy = "*"
+django-debug-toolbar = "*"
 
 [dev-packages]
 ipdb = "*"
 mypy = "*"
+django-debug-toolbar = "*"
 
 [requires]
 python_version = "3.7"

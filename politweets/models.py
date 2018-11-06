@@ -52,6 +52,13 @@ class Member(models.Model):
             self.last_name
         )
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['party']),
+            models.Index(fields=['chamber']),
+            models.Index(fields=['gender']),
+        ]
+
 
 class TweetQuerySet(models.QuerySet):
     def with_hashtag(self, hashtag: str, case_sensitive: bool = False):
@@ -79,3 +86,8 @@ class Tweet(models.Model):
     class Meta:
         get_latest_by = 'twitter_tweet_id'
         ordering = ['-twitter_tweet_id']
+        indexes = [
+            models.Index(fields=['twitter_tweet_id']),
+            models.Index(fields=['text']),
+            models.Index(fields=['time']),
+        ]

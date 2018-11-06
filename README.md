@@ -68,7 +68,7 @@ npm install
 npm run build
 ```
 
-To force Django to use the production assets, create a file `politweetalyzer/settings_local.py`:
+To force Django to use the production assets, create a file `politweetalyzer/settings/local.py`:
 
 ```python
 import os
