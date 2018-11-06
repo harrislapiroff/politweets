@@ -7,7 +7,7 @@ RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev
 RUN pip install pipenv
 
 COPY ./Pipfile* /app/django/
-RUN pipenv install
+RUN pipenv install --dev
 
 # The Django code must be provided as a volume mounted at /app/django
 CMD pipenv run ./manage.py migrate && pipenv run ./manage.py runserver 0.0.0.0:8000
