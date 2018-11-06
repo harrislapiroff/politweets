@@ -1,3 +1,4 @@
+import itertools
 from typing import TYPE_CHECKING
 
 from django.db.models import Count
@@ -21,7 +22,7 @@ def party_breakdown(tweets: 'QuerySet', func: callable) -> dict:
 def tweet_summary(tweets: 'QuerySet') -> dict:
     return {
         'total_tweets': tweets.count(),
-        'popular_hashtags': list(hashtag_counts(tweets))[0:10],
+        'popular_hashtags': itertools.islice(hashtag_counts(tweets), 10),
     }
 
 

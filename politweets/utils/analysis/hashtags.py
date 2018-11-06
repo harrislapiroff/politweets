@@ -22,4 +22,9 @@ def hashtag_counts(tweets: 'QuerySet') -> Iterable[Tuple[str, int]]:
         yield {
             'tag': capitalization_counter.most_common(1)[0][0],
             'count': count,
+            'member_count': tweets.with_hashtag(hashtag)
+                                  .values('member')
+                                  .order_by('member')
+                                  .distinct()
+                                  .count()
         }

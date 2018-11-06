@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 import LoadingBox from './LoadingBox.js'
+import { pad, NBSP } from '~/utils/string.js'
 
 import './HashtagList.sass'
 
@@ -39,8 +40,13 @@ export default function HashtagList({
 }) {
 	const bareHashtags = hashtags.map(x => ({
 		tag: x.tag.slice(1),
-		count: x.count
+		count: x.count,
+		member_count: x.member_count,
 	}))
+
+	const maxCountDigits = bareHashtags.length ? String(bareHashtags[0].count).length : 0
+	const maxMemberCountDigits = bareHashtags.length ? String(bareHashtags[0].member_count).length : 0
+
 	return (
 		<div className="hashtag-list">
 			<h2 className="hashtag-list__title">
@@ -61,7 +67,14 @@ export default function HashtagList({
 						<Link className="hashtag-list__list-item-link" to={`/hashtag/${x.tag}`}>
 							<span className="hashtag-list__hashtag">#{x.tag}</span>
 							<span className="hashtag-list__count">
-								<span className="hashtag-list__count-number">{x.count}</span> uses
+								<span className="hashtag-list__count-number">
+									{pad(x.count, maxCountDigits, NBSP)}
+								</span>{' '}
+								uses{' '}
+								<span className="hashtag-list__count-number">
+									{pad(x.member_count, maxMemberCountDigits, NBSP)}
+								</span>{' '}
+								members
 							</span>
 						</Link>
 					</li>
