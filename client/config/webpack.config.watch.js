@@ -113,7 +113,7 @@ module.exports = {
 			process.env.NODE_PATH.split(path.delimiter).filter(Boolean)
 		),
 		alias: {
-			'~': paths.appSrc,
+			'~': path.resolve(__dirname, '..', 'src/'),
 		},
 		// These are the reasonable defaults supported by the Node ecosystem.
 		// We also include JSX as a common component filename extension to support

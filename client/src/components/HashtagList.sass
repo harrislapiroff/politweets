@@ -1,9 +1,15 @@
+@import '~/_variables.sass'
+
 .hashtag-list__title
-	font-size: 3rem
+	font-family: $font-family-headings
+	text-transform: uppercase
+	font-size: 4rem
+	line-height: 5rem
+	font-weight: 400
 	margin: 0
-	padding: 1rem 0.75rem 1rem 0.75rem
+	padding: 0.75rem 0.7rem 0.3rem 0.75rem
 	color: #222
-	border-bottom: 2px solid #222
+	border-bottom: 0.2rem solid #222
 
 .hashtag-list__title-highlight--democrat
 	color: #08C
@@ -48,3 +54,7 @@
 	display: inline-block
 	width: 10%
 	margin-left: 2%
+
+@media (max-width: 400px)
+	.hashtag-list__title
+		font-size: 3rem
