@@ -73,7 +73,7 @@ export default function TweetMultiBarChart({
 		<svg
 			className="bar-chart"
 			width={CHART_WIDTH}
-			height={domainTicks.length * ROW_HEIGHT}
+			height={domainTicks.length * (ROW_HEIGHT + ROW_GUTTER)}
 			viewBox={`0 0 ${CHART_WIDTH} ${domainTicks.length * ROW_HEIGHT}`}
 			preserveAspectRatio="xMidYMin meet"
 		>
