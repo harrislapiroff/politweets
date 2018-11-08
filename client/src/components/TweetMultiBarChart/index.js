@@ -8,6 +8,7 @@ import BarChartRow from './BarChartRow.js'
 import {
 	ROW_HEIGHT,
 	ROW_GUTTER,
+	CHART_WIDTH,
 } from './measurements.js'
 
 import './index.sass'
