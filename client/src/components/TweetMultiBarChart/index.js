@@ -7,7 +7,6 @@ import { filledDateRange, ISOtoDate, sameDate, sameHour } from '~/utils/date.js'
 import BarChartRow from './BarChartRow.js'
 import {
 	ROW_HEIGHT,
-	CHART_WIDTH,
 	ROW_GUTTER,
 } from './measurements.js'
 
