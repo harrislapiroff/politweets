@@ -9,8 +9,6 @@ from politweets.models import Tweet
 from politweets.api.edge.utils import (
     party_breakdown,
     tweet_summary,
-    hour_breakdown,
-    day_breakdown,
 )
 
 
@@ -40,31 +38,31 @@ class HashtagDetailView(APIView):
     @method_decorator(cache_page(60*5))
     def get(self, request, hashtag=None, format=None):
         """
-        Returns:
-
-        * the past day of tweets using hashtag, broken down by hour
-        * the past week of tweets using hashtag, broken down by day
-        * the past month of tweets using hashtag, broken down by day
+        Returns the past thirty days of tweets with a given hashtag
         """
-        hashtagged_tweets = Tweet.objects.with_hashtag(hashtag)
 
-        past_day_tweets = hashtagged_tweets.filter(
-            time__gte=datetime.datetime.now() - datetime.timedelta(days=1),
+        hashtagged_tweets = Tweet.objects.with_hashtag(
+            hashtag
+        ).filter(
+            time__gte=datetime.datetime.now() - datetime.timedelta(days=30)
         )
 
-        past_week_tweets = hashtagged_tweets.filter(
-            time__gte=datetime.datetime.now() - datetime.timedelta(days=7),
-        )
+        results = [{
+            'time': tweet.time,
+            'text': tweet.text,
+            'member': {
+                'first_name': tweet.member.first_name,
+                'middle_name': tweet.member.middle_name,
+                'last_name': tweet.member.last_name,
+                'suffix': tweet.member.suffix,
+                'gender': tweet.member.gender,
+                'chamber': tweet.member.chamber,
+                'state': tweet.member.state,
+                'twitter': tweet.member.twitter,
+            }
+        } for tweet in hashtagged_tweets]
 
-        past_month_tweets = hashtagged_tweets.filter(
-            time__gte=datetime.datetime.now() - datetime.timedelta(days=30),
-        )
-
-        return Response({
-            'past_day': party_breakdown(past_day_tweets, hour_breakdown),
-            'past_week': party_breakdown(past_week_tweets, day_breakdown),
-            'past_month': party_breakdown(past_month_tweets, day_breakdown),
-        })
+        return Response(results)
 
 
 summary_view = SummaryView.as_view()
