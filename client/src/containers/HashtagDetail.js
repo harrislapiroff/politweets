@@ -70,7 +70,7 @@ export default class HashtagDetail extends Component {
 									target="_blank"
 									rel="noopener noreferrer"
 								>
-									See <strong>#{hashtag}</strong> on Twitter
+									<strong>#{hashtag}</strong> on Twitter
 								</a>
 								<Link className="hashtag-detail__close" to="/" title="close">
 									&times;

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 
 import { format } from 'date-fns'
 
+import TweetTextProcessor from '~/components/TweetTextProcessor.js'
+
 import './Tweet.sass'
 
 export default function Tweet({ tweet, className }) {
@@ -12,9 +14,17 @@ export default function Tweet({ tweet, className }) {
 				<div className="tweet__user-name">{tweet.member.full_name}</div>
 				<div className="tweet__user-handle">@{tweet.member.twitter}</div>
 			</div>
-			<div className="tweet__text">{tweet.text}</div>
+			<div className="tweet__text">
+				<TweetTextProcessor>{tweet.text}</TweetTextProcessor>
+			</div>
 			<div className="tweet__footer">
-				{format(tweet.time, 'h:mm A - MMM D, YYYY')}
+				<span className="tweet__date">{format(tweet.time, 'h:mm A – MMM D, YYYY')}</span>
+				<a
+					href={`https://twitter.com/${tweet.member.twitter}/status/${tweet.id}`}
+					className="tweet__link-original"
+				>
+					Original on Twitter
+				</a>
 			</div>
 		</div>
 	)

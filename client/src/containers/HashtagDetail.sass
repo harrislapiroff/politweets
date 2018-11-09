@@ -1,3 +1,5 @@
+@import '~/_variables.sass'
+
 @keyframes hashtagDetailSlideInRight
 	0%
 		transform: translate3d(100%, 0, 0)
@@ -8,7 +10,7 @@
 	margin-top: 4rem
 	position: relative
 	display: grid
-	grid-template-columns: 20rem auto 35rem
+	grid-template-columns: 19rem minmax(200px, auto) 34rem
 
 	@media(max-width: 700px)
 		position: fixed
@@ -44,9 +46,9 @@
 .hashtag-detail__twitter-link
 	font-size: 1.4rem
 	text-decoration: none
-	color: #468
+	color: $color-link
 	&:hover
-		color: #357
+		color: $color-link-hover
 		text-decoration: underline
 
 .hashtag-detail__close
@@ -63,7 +65,7 @@
 
 .hashtag-detail__title
 	font-size: 2rem
-	line-height: 1rem
+	line-height: 2.5rem
 	margin: 0
 	margin-bottom: 2rem
 
