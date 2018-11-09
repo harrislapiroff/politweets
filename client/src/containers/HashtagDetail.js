@@ -8,10 +8,9 @@ import Tweet from '~/components/Tweet.js'
 import ErrorBoundary from '~/components/ErrorBoundary.js'
 import { DATE_RANGE_OPTIONS, getDateRange } from '~/utils/date.js'
 import { tweetsBetweenDates } from '~/utils/tweetFiltering.js'
-import { DEMOCRATS, REPUBLICANS } from '~/utils/categories.js'
+import { category } from '~/utils/prop-types.js'
 
 import './HashtagDetail.sass'
-
 
 export default class HashtagDetail extends Component {
 	constructor() {
@@ -45,10 +44,9 @@ export default class HashtagDetail extends Component {
 
 	render() {
 		const { tweets } = this.state
-		const { hashtag } = this.props
+		const { hashtag, categories } = this.props
 		const dateRange = getDateRange(this.props.dateRange)
 		const tick = this.props.dateRange === 'past_day' ? 'hour' : 'day'
-		const categories = [DEMOCRATS, REPUBLICANS]
 		const tweetsFiltered = tweets ? tweetsBetweenDates(
 			tweets, dateRange.start, dateRange.end
 		) : []
@@ -94,11 +92,11 @@ export default class HashtagDetail extends Component {
 									<Tweet
 										key={t.id}
 										tweet={t}
-										className={cond([
-											[t => t.member.party === 'D', always('democrats')],
-											[t => t.member.party === 'R', always('republicans')],
-											[t => t.member.party === 'I', always('independents')],
-										])(t)}
+										className={cond(
+											categories.map(
+												c => [c.tweetFilterFn, always(c.key)]
+											)
+										)(t)}
 									/>
 								))}
 							</ErrorBoundary>
@@ -114,4 +112,5 @@ HashtagDetail.propTypes = {
 	api: PropTypes.string.isRequired,
 	hashtag: PropTypes.string.isRequired,
 	dateRange: PropTypes.oneOf(Object.keys(DATE_RANGE_OPTIONS)).isRequired,
+	categories: PropTypes.shape(category)
 }

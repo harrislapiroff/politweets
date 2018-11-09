@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 
 import LoadingBox from './LoadingBox.js'
 import { pad, NBSP } from '~/utils/string.js'
+import { category } from '~/utils/prop-types.js'
 
 import './HashtagList.sass'
 
@@ -34,7 +35,7 @@ function HashtagListItemLoading() {
 
 export default function HashtagList({
 	hashtags,
-	party,
+	category,
 	loading,
 	expectedListSize,
 }) {
@@ -51,9 +52,9 @@ export default function HashtagList({
 		<div className="hashtag-list">
 			<h2 className="hashtag-list__title">
 				<span
-					className={`hashtag-list__title-highlight hashtag-list__title-highlight--${party}`}
+					className={`hashtag-list__title-highlight hashtag-list__title-highlight--${category.key}`}
 				>
-					{PARTY_LABELS[party]}s’
+					{category.possessive}
 				</span>{' '}
 				Hashtags
 			</h2>
@@ -89,7 +90,7 @@ HashtagList.propTypes = {
 		'tag': PropTypes.string,
 		'count': PropTypes.number,
 	})),
-	party: PropTypes.oneOf(['democrat', 'republican', 'independent']),
+	category: PropTypes.shape(category),
 	loading: PropTypes.bool,
 	/** Expected size of list. Will be used for loading animation */
 	expectedListSize: PropTypes.number,
@@ -97,7 +98,7 @@ HashtagList.propTypes = {
 
 HashtagList.defaultProps = {
 	hashtags: [],
-	party: 'independents',
+	category: 'independents',
 	loading: true,
 	expectedListSize: 10,
 }
