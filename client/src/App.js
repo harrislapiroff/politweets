@@ -1,13 +1,11 @@
-import { toPairs } from 'ramda'
-
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { BrowserRouter, Route } from "react-router-dom";
 
-import HashtagList from './components/HashtagList.js'
-import ErrorBoundary from './components/ErrorBoundary.js'
-import HashtagDetail from './containers/HashtagDetail.js'
-import { DATE_RANGE_OPTIONS } from '~/utils/date.js'
+import HashtagList from '~/components/HashtagList.js'
+import ErrorBoundary from '~/components/ErrorBoundary.js'
+import HashtagDetail from '~/containers/HashtagDetail.js'
+import FilterBar from '~/components/FilterBar.js'
 import { CATEGORY_CHOICES } from '~/utils/categories.js'
 
 import './App.sass'
@@ -52,21 +50,12 @@ class App extends Component {
 						What is congress tweeting about?
 					</h1>
 
-					<select value={this.state.dateRange} onChange={this.handleDateRangeChange}>
-						{toPairs(DATE_RANGE_OPTIONS).map(option => (
-							<option value={option[0]} key={option[0]}>
-								{option[1]}
-							</option>
-						))}
-					</select>
-
-					<select value={this.state.category} onChange={this.handleCategoryChange}>
-						{CATEGORY_CHOICES.map(option => (
-							<option value={option.key} key={option.key}>
-								{option.label}
-							</option>
-						))}
-					</select>
+					<FilterBar
+						dateRangeValue={this.state.dateRange}
+						categoryValue={this.state.category}
+						onCategoryChange={this.handleCategoryChange}
+						onDateRangeChange={this.handleDateRangeChange}
+					/>
 
 					<div className="split-pane">
 						{categorySet.categories.map(cat => (
