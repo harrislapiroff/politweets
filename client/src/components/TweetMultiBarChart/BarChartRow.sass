@@ -1,0 +1,24 @@
+@import '~/_variables.sass'
+
+.bar-chart__row-bg
+	fill: #F5F5F5
+
+	.bar-chart__row:hover > &
+		fill: #EEE
+
+.bar-chart__row-label
+	font-family: $font-family-mono
+	font-size: 1.2rem
+	line-height: 2rem
+
+.bar-chart__row-label--left
+	text-anchor: end
+
+.bar-chart__row-label--right
+	text-anchor: start
+
+.bar-chart__bar--democrats, .bar-chart__text--democrats
+	fill: $color-democrat
+
+.bar-chart__bar--republicans, .bar-chart__text--republicans
+	fill: $color-republican

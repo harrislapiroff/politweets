@@ -1,34 +1,12 @@
-import { toPairs } from 'ramda'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { DateTime } from 'luxon'
-import {
-	VictoryChart,
-	VictoryGroup,
-	VictoryTooltip,
-	VictoryVoronoiContainer,
-	VictoryBar,
-} from 'victory'
 
-import ErrorBoundary from '../components/ErrorBoundary.js'
-import { DATE_RANGE_OPTIONS, getDateRange } from '../utils/date.js'
-import { PARTY_COLORS } from '../utils/parties.js'
+import TweetMultiBarChart from '~/components/TweetMultiBarChart/index.js'
+import ErrorBoundary from '~/components/ErrorBoundary.js'
+import { DATE_RANGE_OPTIONS, getDateRange } from '~/utils/date.js'
 
 import './HashtagDetail.sass'
-
-function ISOtoDate(ISODate) {
-	return DateTime.fromISO(ISODate).toJSDate()
-}
-
-
-/** Convert API data to xy points for a chart. Auto detect whether date is in day or hour format */
-function apiDataToChartData(data) {
-	return data.map(d => ({
-		x: 'day' in d ? ISOtoDate(d.day) : ISOtoDate(d.hour),
-		y: d.count,
-	}))
-}
 
 
 export default class HashtagDetail extends Component {
@@ -36,7 +14,7 @@ export default class HashtagDetail extends Component {
 		super()
 		this.state = {
 			loading: true,
-			data: {},
+			data: null,
 		}
 	}
 
@@ -62,17 +40,10 @@ export default class HashtagDetail extends Component {
 	}
 
 	render() {
-		const dataForDateRange = this.state.data[this.props.dateRange]
+		const { data } = this.state
+		const dataForDateRange = data ? data[this.props.dateRange] : null
 		const dateRange = getDateRange(this.props.dateRange)
-		let chartData = { democrats: [], republicans: [], independents: []}
-
-		if (dataForDateRange) {
-			chartData.democrats = apiDataToChartData(dataForDateRange.democrats)
-			chartData.republicans = apiDataToChartData(dataForDateRange.republicans)
-			chartData.independents = apiDataToChartData(dataForDateRange.independents)
-		}
-
-		const chartDataAsPairs = toPairs(chartData).filter(x => x[1].length > 0)
+		const tick = this.props.dateRange === 'past_day' ? 'hour' : 'day'
 
 		return (
 			<div className="hashtag-detail">
@@ -84,39 +55,16 @@ export default class HashtagDetail extends Component {
 					<span className="hashtag-detail__title-hashtag">{this.props.hashtag}</span>{' '}
 					{this.state.loading && <span className="hashtag-detail__title-loading-indicator">Loading...</span>}
 				</h1>
-				<ErrorBoundary>
-					<VictoryChart
-						domainPadding={{ y: 10 }}
-						scale={{ x: 'time' }}
-						minDomain={{ x: dateRange.start }}
-						maxDomain={{ x: dateRange.end }}
-						style={{
-							fontFamily: ["Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
-						}}
-						animate={{ duration: 500, easing: "linear" }}
-						width={1000}
-						height={250}
-					>
-						<VictoryGroup
-							colorScale={chartDataAsPairs.map(x => PARTY_COLORS[x[0]])}
-							style={{data: { width: 12 }}}
-							offset={14}
-						>
-							{chartDataAsPairs.map(x => (
-									<VictoryBar
-										key={x[0]}
-										data={x[1]}
-										labels={d => `Tweets: ${d.y}`}
-										labelComponent={
-											<VictoryTooltip
-												style={{ fontSize: 10 }}
-											/>
-										}
-									/>
-							))}
-						</VictoryGroup>
-					</VictoryChart>
-				</ErrorBoundary>
+				{data && (
+					<ErrorBoundary>
+						<TweetMultiBarChart
+							data={dataForDateRange}
+							startDate={dateRange.start}
+							endDate={dateRange.end}
+							tick={tick}
+						/>
+					</ErrorBoundary>
+				)}
 			</div>
 		)
 	}

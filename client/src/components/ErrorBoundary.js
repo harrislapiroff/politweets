@@ -1,20 +1,26 @@
 import React, { Component } from 'react'
 
+import './ErrorBoundary.sass'
+
 export default class ErrorBoundary extends Component {
 	constructor(props) {
-		super(props);
-		this.state = { hasError: false };
+		super(props)
+		this.state = { hasError: false, error: null }
 	}
 
-	static getDerivedStateFromError(error) {
+	componentDidCatch(error, info) {
 		// Update state so the next render will show the fallback UI.
-		return { hasError: true };
+		this.setState({ hasError: true, error })
 	}
 
 	render() {
 		if (this.state.hasError) {
 			// You can render any custom fallback UI
-			return <h1>An error occurred.</h1>;
+			return (
+				<div class="error-boundary">
+					<span class="error-lede">An error occurred:</span> {'' + this.state.error}
+				</div>
+			)
 		}
 
 		return this.props.children;
