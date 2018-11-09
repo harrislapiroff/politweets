@@ -10,6 +10,9 @@ import {
 	ROW_HEIGHT,
 	ROW_GUTTER,
 	CHART_WIDTH,
+	TWEET_NODE_WIDTH,
+	TWEET_NODE_GUTTER,
+	BAR_MAX_WIDTH,
 } from './measurements.js'
 
 import './index.sass'
@@ -65,7 +68,7 @@ export default function TweetMultiBarChart({
 		}
 	})
 
-	// Calculate the maximum value of the range
+	// Calculate the maximum value of the range, for layout purposes
 	const allCounts = dataRows.reduce((accumulator, dataPoint) => {
 		const counts = categories.map(category => {
 			return dataPoint.tweetsByCategory[category.key].length
@@ -73,6 +76,15 @@ export default function TweetMultiBarChart({
 		return accumulator.concat(counts)
 	}, [])
 	const maxRange = Math.max(...allCounts)
+
+	// If there are enough tweets in the maximum row that they'll overflow, make
+	// each tweet node smaller
+	let nodeWidth
+	if (maxRange * (TWEET_NODE_WIDTH + TWEET_NODE_GUTTER) > BAR_MAX_WIDTH) {
+		nodeWidth = Math.floor((BAR_MAX_WIDTH + TWEET_NODE_GUTTER) / maxRange) - TWEET_NODE_GUTTER
+	} else {
+		nodeWidth = TWEET_NODE_WIDTH
+	}
 
 	return (
 		<svg
@@ -88,7 +100,7 @@ export default function TweetMultiBarChart({
 						label={d.label}
 						tweetsByCategory={d.tweetsByCategory}
 						y={i * (ROW_HEIGHT + ROW_GUTTER)}
-						max={maxRange}
+						nodeWidth={nodeWidth}
 					/>
 			))}
 		</svg>
