@@ -44,7 +44,6 @@ export default function BarChartRow({
 				y={0}
 				width={labelWidth * 2 + labelGutter * 2 + barMaxWidth}
 				height={barHeight * 2 + nodeGutter + rowGutter}
-				fill="#FFF"
 			/>
 			<rect
 				className="bar-chart__row-bg"

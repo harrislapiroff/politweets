@@ -37,6 +37,8 @@ export default class TweetTextProcessor extends Component {
 				lastStringStart = match.offset + match.matchedText.length
 			}
 		})
+		// Add remaining stringy bit to the node list, if any
+		reactNodes.push(decodedString.slice(lastStringStart))
 		return reactNodes
 	}
 
