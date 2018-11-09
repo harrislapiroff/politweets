@@ -1,9 +1,6 @@
 import itertools
 from typing import TYPE_CHECKING
 
-from django.db.models import Count
-from django.db.models.functions import TruncHour, TruncDay
-
 from politweets.models import Member
 from politweets.utils.analysis.hashtags import hashtag_counts
 
@@ -24,15 +21,3 @@ def tweet_summary(tweets: 'QuerySet') -> dict:
         'total_tweets': tweets.count(),
         'popular_hashtags': itertools.islice(hashtag_counts(tweets), 10),
     }
-
-
-def hour_breakdown(tweets: 'QuerySet') -> 'QuerySet':
-    return tweets.annotate(
-        hour=TruncHour('time')
-    ).values('hour').annotate(count=Count('pk')).order_by('hour')
-
-
-def day_breakdown(tweets: 'QuerySet') -> 'QuerySet':
-    return tweets.annotate(
-        day=TruncDay('time')
-    ).values('day').annotate(count=Count('pk')).order_by('day')

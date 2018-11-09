@@ -6,49 +6,86 @@ import {
 	GUTTER,
 	BAR_HEIGHT,
 	BAR_MAX_WIDTH,
-	ROW_HEIGHT,
+	TWEET_NODE_WIDTH,
+	TWEET_NODE_GUTTER,
+	ROW_GUTTER,
 } from './measurements.js'
 import { pad, NBSP } from '~/utils/string.js'
 
 import './BarChartRow.sass'
 
-export default function BarChartRow({ label, data, x, y, max }) {
-	const categories = Object.keys(data)
+export default function BarChartRow({
+	active,
+	onMouseOver,
+	onMouseOut,
+	label,
+	tweetsByCategory,
+	x,
+	y,
+	labelWidth,
+	labelGutter,
+	barHeight,
+	barMaxWidth,
+	nodeGutter,
+	nodeWidth,
+	rowGutter,
+}) {
+	const categories = Object.keys(tweetsByCategory)
 	return (
-		<g className="bar-chart__row" transform={`translate(${x} ${y})`}>
+		<g
+			className={`bar-chart__row bar-chart__row--${active ? 'active' : 'inactive'}`}
+			transform={`translate(${x} ${y})`}
+			onMouseOver={onMouseOver}
+			onMouseOut={onMouseOut}
+		>
+			<rect
+				className="pointer-events-target"
+				x={0}
+				y={0}
+				width={labelWidth * 2 + labelGutter * 2 + barMaxWidth}
+				height={barHeight * 2 + nodeGutter + rowGutter}
+				fill="#FFF"
+			/>
 			<rect
 				className="bar-chart__row-bg"
-				x={LABEL_WIDTH + GUTTER}
+				x={labelWidth + labelGutter}
 				y={0}
-				width={BAR_MAX_WIDTH}
-				height={ROW_HEIGHT}
+				width={barMaxWidth}
+				height={barHeight * 2 + nodeGutter}
 			/>
-			<text className='bar-chart__row-label bar-chart__row-label--left' x={LABEL_WIDTH} y={BAR_HEIGHT + 4}>
+			<text className='bar-chart__row-label bar-chart__row-label--left' x={labelWidth} y={barHeight + 4}>
 				{label}
 			</text>
 			<g
 				className='bar-chart__row-bars'
-				transform={`translate(${LABEL_WIDTH + GUTTER} 0)`}
+				transform={`translate(${labelWidth + labelGutter} 0)`}
 			>
-				{categories.map((c, i) => (
-					<rect
-						className={`bar-chart__bar bar-chart__bar--${c}`}
-						x={0}
-						y={i * BAR_HEIGHT}
-						height={BAR_HEIGHT}
-						width={max ? Math.floor((data[c] / max) * BAR_MAX_WIDTH) : 0}
-						key={c}
-					/>
+				{categories.map((category, i) => (
+					<g
+						transform={`translate(0 ${i * (barHeight + nodeGutter)})`}
+						key={category}
+					>
+						{tweetsByCategory[category].map((tweet, j) => (
+							<rect
+								key={tweet.id}
+								x={j * (nodeWidth + nodeGutter)}
+								y={0}
+								width={nodeWidth}
+								height={barHeight}
+								className={`bar-chart__tweet-node bar-chart__tweet-node--${category}`}
+							/>
+						))}
+					</g>
 				))}
 			</g>
 			<text
 				className='bar-chart__row-label bar-chart__row-label--right'
-				y={BAR_HEIGHT + 4}
-				x={LABEL_WIDTH + GUTTER + BAR_MAX_WIDTH + GUTTER}
+				y={barHeight + 4}
+				x={labelWidth + labelGutter + barMaxWidth + labelGutter}
 			>
 				{categories.map((c, i) => (
 					<tspan key={c} className={`bar-chart__text bar-chart__text--${c}`}>
-						{pad(data[c], 2, NBSP)}{' '}
+						{pad(tweetsByCategory[c].length, 2, NBSP)}{' '}
 					</tspan>
 				))}
 			</text>
@@ -57,16 +94,34 @@ export default function BarChartRow({ label, data, x, y, max }) {
 }
 
 BarChartRow.propTypes = {
+	active: PropTypes.bool,
+	onMouseOver: PropTypes.func,
+	onMouseOut: PropTypes.func,
 	label: PropTypes.string,
-	data: PropTypes.object.isRequired,
+	data: PropTypes.object,
+	tweetsByCategory: PropTypes.object.isRequired,
 	x: PropTypes.number,
 	y: PropTypes.number,
-	max: PropTypes.number,
+	labelWidth: PropTypes.number,
+	labelGutter: PropTypes.number,
+	barMaxWidth: PropTypes.number,
+	barHeight: PropTypes.number,
+	nodeWidth: PropTypes.number,
+	nodeGutter: PropTypes.number,
 }
 
 BarChartRow.defaultProps = {
+	active: true,
+	onMouseOver: () => {},
+	onMouseOut: () => {},
 	label: '',
 	x: 0,
 	y: 0,
-	max: 100,
+	labelWidth: LABEL_WIDTH,
+	labelGutter: GUTTER,
+	barMaxWidth: BAR_MAX_WIDTH,
+	barHeight: BAR_HEIGHT,
+	nodeWidth: TWEET_NODE_WIDTH,
+	nodeGutter: TWEET_NODE_GUTTER,
+	rowGutter: ROW_GUTTER,
 }

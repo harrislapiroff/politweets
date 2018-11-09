@@ -1,3 +1,5 @@
+@import '~/_variables.sass'
+
 @keyframes hashtagDetailSlideInRight
 	0%
 		transform: translate3d(100%, 0, 0)
@@ -5,16 +7,19 @@
 		transform: translate3d(0, 0, 0)
 
 .hashtag-detail
-	margin-top: 2rem
+	margin-top: 4rem
 	position: relative
+	display: grid
+	grid-template-columns: 19rem minmax(200px, auto) 34rem
 
 	@media(max-width: 700px)
 		position: fixed
+		display: block
 		top: 0
 		bottom: 0
 		left: 2rem
 		margin-top: 0
-		padding: 0 2rem
+		padding: 1.5rem
 		right: 0
 		background: #FFF
 		border-left: 1px solid #CCC
@@ -24,11 +29,34 @@
 		animation-duration: 500ms
 		animation-timing-function: ease-out
 
+.hashtag-detail__specs
+	grid-column-start: 1
+	position: relative
+	@media(max-width: 700px)
+		margin-bottom: 2rem
+
+.hashtag-detail__chart
+	grid-column-start: 2
+	@media(max-width: 700px)
+		margin-bottom: 1rem
+
+.hashtage-detail__tweets
+	grid-column-start: 3
+
+.hashtag-detail__twitter-link
+	font-size: 1.4rem
+	text-decoration: none
+	color: $color-link
+	&:hover
+		color: $color-link-hover
+		text-decoration: underline
+
 .hashtag-detail__close
 	position: absolute
-	top: 1rem
-	right: 2rem
-	font-size: 3rem
+	top: 0
+	right: 0
+	font-size: 2rem
+	line-height: 2rem
 	color: #999
 	text-decoration: none
 	&:hover
@@ -36,8 +64,8 @@
 
 
 .hashtag-detail__title
-	font-size: 4rem
-	line-height: 6rem
+	font-size: 2rem
+	line-height: 2.5rem
 	margin: 0
 	margin-bottom: 2rem
 
