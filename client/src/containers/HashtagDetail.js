@@ -1,3 +1,4 @@
+import { cond, always } from 'ramda'
 import React, { Component, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
@@ -89,7 +90,17 @@ export default class HashtagDetail extends Component {
 						</div>
 						<div className="hashtag-detail__tweets">
 							<ErrorBoundary>
-								{tweetsFiltered.map(t => <Tweet tweet={t} />)}
+								{tweetsFiltered.map(t => (
+									<Tweet
+										key={t.id}
+										tweet={t}
+										className={cond([
+											[t => t.member.party === 'D', always('democrats')],
+											[t => t.member.party === 'R', always('republicans')],
+											[t => t.member.party === 'I', always('independents')],
+										])(t)}
+									/>
+								))}
 							</ErrorBoundary>
 						</div>
 					</Fragment>
