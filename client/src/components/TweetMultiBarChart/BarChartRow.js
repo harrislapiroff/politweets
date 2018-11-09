@@ -8,12 +8,16 @@ import {
 	BAR_MAX_WIDTH,
 	TWEET_NODE_WIDTH,
 	TWEET_NODE_GUTTER,
+	ROW_GUTTER,
 } from './measurements.js'
 import { pad, NBSP } from '~/utils/string.js'
 
 import './BarChartRow.sass'
 
 export default function BarChartRow({
+	active,
+	onMouseOver,
+	onMouseOut,
 	label,
 	tweetsByCategory,
 	x,
@@ -24,10 +28,24 @@ export default function BarChartRow({
 	barMaxWidth,
 	nodeGutter,
 	nodeWidth,
+	rowGutter,
 }) {
 	const categories = Object.keys(tweetsByCategory)
 	return (
-		<g className="bar-chart__row" transform={`translate(${x} ${y})`}>
+		<g
+			className={`bar-chart__row bar-chart__row--${active ? 'active' : 'inactive'}`}
+			transform={`translate(${x} ${y})`}
+			onMouseOver={onMouseOver}
+			onMouseOut={onMouseOut}
+		>
+			<rect
+				className="pointer-events-target"
+				x={0}
+				y={0}
+				width={labelWidth * 2 + labelGutter * 2 + barMaxWidth}
+				height={barHeight * 2 + nodeGutter + rowGutter}
+				fill="#FFF"
+			/>
 			<rect
 				className="bar-chart__row-bg"
 				x={labelWidth + labelGutter}
@@ -76,6 +94,9 @@ export default function BarChartRow({
 }
 
 BarChartRow.propTypes = {
+	active: PropTypes.bool,
+	onMouseOver: PropTypes.func,
+	onMouseOut: PropTypes.func,
 	label: PropTypes.string,
 	data: PropTypes.object,
 	tweetsByCategory: PropTypes.object.isRequired,
@@ -90,6 +111,9 @@ BarChartRow.propTypes = {
 }
 
 BarChartRow.defaultProps = {
+	active: true,
+	onMouseOver: () => {},
+	onMouseOut: () => {},
 	label: '',
 	x: 0,
 	y: 0,
@@ -99,4 +123,5 @@ BarChartRow.defaultProps = {
 	barHeight: BAR_HEIGHT,
 	nodeWidth: TWEET_NODE_WIDTH,
 	nodeGutter: TWEET_NODE_GUTTER,
+	rowGutter: ROW_GUTTER,
 }
