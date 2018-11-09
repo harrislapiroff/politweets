@@ -55,6 +55,7 @@ class HashtagDetailView(APIView):
                 'first_name': tweet.member.first_name,
                 'middle_name': tweet.member.middle_name,
                 'last_name': tweet.member.last_name,
+                'full_name': tweet.member.get_full_name(),
                 'suffix': tweet.member.suffix,
                 'party': tweet.member.party,
                 'gender': tweet.member.gender,

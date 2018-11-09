@@ -17,8 +17,8 @@ export default class ErrorBoundary extends Component {
 		if (this.state.hasError) {
 			// You can render any custom fallback UI
 			return (
-				<div class="error-boundary">
-					<span class="error-lede">An error occurred:</span> {'' + this.state.error}
+				<div className="error-boundary">
+					<span className="error-lede">An error occurred:</span> {'' + this.state.error}
 				</div>
 			)
 		}
