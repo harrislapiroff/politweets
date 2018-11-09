@@ -20,7 +20,7 @@ export default class TweetTextProcessor extends Component {
 			mention: 'twitter',
 			replaceFn: (match) => {
 				// First add the string node between the last match and the current one
-				reactNodes.push(string.slice(lastStringStart, match.offset))
+				reactNodes.push(decodedString.slice(lastStringStart, match.offset))
 				// Next, process the current match
 				reactNodes.push(
 					<a
@@ -28,6 +28,7 @@ export default class TweetTextProcessor extends Component {
 						className="tweet__link"
 						rel="noopener noreferrer"
 						target="_blank"
+						key={match.offset}
 					>
 						{match.getAnchorText()}
 					</a>
