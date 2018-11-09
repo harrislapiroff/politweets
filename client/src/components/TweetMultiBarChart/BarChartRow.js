@@ -7,13 +7,21 @@ import {
 	BAR_HEIGHT,
 	BAR_MAX_WIDTH,
 	ROW_HEIGHT,
+	TWEET_NODE_WIDTH,
+	TWEET_NODE_GUTTER,
 } from './measurements.js'
 import { pad, NBSP } from '~/utils/string.js'
 
 import './BarChartRow.sass'
 
-export default function BarChartRow({ label, data, x, y, max }) {
-	const categories = Object.keys(data)
+export default function BarChartRow({
+	label,
+	tweetsByCategory,
+	x,
+	y,
+	max
+}) {
+	const categories = Object.keys(tweetsByCategory)
 	return (
 		<g className="bar-chart__row" transform={`translate(${x} ${y})`}>
 			<rect
@@ -30,15 +38,22 @@ export default function BarChartRow({ label, data, x, y, max }) {
 				className='bar-chart__row-bars'
 				transform={`translate(${LABEL_WIDTH + GUTTER} 0)`}
 			>
-				{categories.map((c, i) => (
-					<rect
-						className={`bar-chart__bar bar-chart__bar--${c}`}
-						x={0}
-						y={i * BAR_HEIGHT}
-						height={BAR_HEIGHT}
-						width={max ? Math.floor((data[c] / max) * BAR_MAX_WIDTH) : 0}
-						key={c}
-					/>
+				{categories.map((category, i) => (
+					<g
+						transform={`translate(0 ${i * (BAR_HEIGHT + TWEET_NODE_GUTTER)})`}
+						key={category}
+					>
+						{tweetsByCategory[category].map((tweet, j) => (
+							<rect
+								key={tweet.id}
+								x={j * (TWEET_NODE_WIDTH + TWEET_NODE_GUTTER)}
+								y={0}
+								width={TWEET_NODE_WIDTH}
+								height={BAR_HEIGHT}
+								className={`bar-chart__tweet-node bar-chart__tweet-node--${category}`}
+							/>
+						))}
+					</g>
 				))}
 			</g>
 			<text
@@ -48,7 +63,7 @@ export default function BarChartRow({ label, data, x, y, max }) {
 			>
 				{categories.map((c, i) => (
 					<tspan key={c} className={`bar-chart__text bar-chart__text--${c}`}>
-						{pad(data[c], 2, NBSP)}{' '}
+						{pad(tweetsByCategory[c].length, 2, NBSP)}{' '}
 					</tspan>
 				))}
 			</text>
@@ -58,7 +73,8 @@ export default function BarChartRow({ label, data, x, y, max }) {
 
 BarChartRow.propTypes = {
 	label: PropTypes.string,
-	data: PropTypes.object.isRequired,
+	data: PropTypes.object,
+	tweetsByCategory: PropTypes.object.isRequired,
 	x: PropTypes.number,
 	y: PropTypes.number,
 	max: PropTypes.number,

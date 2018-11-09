@@ -1,5 +1,7 @@
 export const BAR_HEIGHT = 10
-export const ROW_HEIGHT = BAR_HEIGHT * 2
+export const TWEET_NODE_WIDTH = BAR_HEIGHT
+export const TWEET_NODE_GUTTER = 1
+export const ROW_HEIGHT = BAR_HEIGHT * 2 + TWEET_NODE_GUTTER
 export const ROW_GUTTER = 4
 export const LABEL_WIDTH = 75
 export const GUTTER = 10

@@ -48,6 +48,7 @@ class HashtagDetailView(APIView):
         )
 
         results = [{
+            'id': tweet.id,
             'time': tweet.time,
             'text': tweet.text,
             'member': {

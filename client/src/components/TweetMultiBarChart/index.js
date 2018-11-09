@@ -86,11 +86,7 @@ export default function TweetMultiBarChart({
 					<BarChartRow
 						key={i}
 						label={d.label}
-						data={Object.keys(d.tweetsByCategory).reduce(
-							(acc, cat) => Object.assign(
-								acc, {[cat]: d.tweetsByCategory[cat].length}
-							), {}
-						)}
+						tweetsByCategory={d.tweetsByCategory}
 						y={i * (ROW_HEIGHT + ROW_GUTTER)}
 						max={maxRange}
 					/>
