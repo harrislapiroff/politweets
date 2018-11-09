@@ -13,7 +13,7 @@ export default function FilterBar({
 	onCategoryChange,
 }) {
 	return (
-		<div class="filter-bar">
+		<div className="filter-bar">
 			<select
 				className="filter-bar__select"
 				value={dateRangeValue}

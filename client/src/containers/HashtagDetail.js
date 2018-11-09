@@ -112,5 +112,5 @@ HashtagDetail.propTypes = {
 	api: PropTypes.string.isRequired,
 	hashtag: PropTypes.string.isRequired,
 	dateRange: PropTypes.oneOf(Object.keys(DATE_RANGE_OPTIONS)).isRequired,
-	categories: PropTypes.shape(category)
+	categories: PropTypes.arrayOf(PropTypes.shape(category))
 }
