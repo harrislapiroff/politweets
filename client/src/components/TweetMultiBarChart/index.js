@@ -96,13 +96,18 @@ export default class TweetMultiBarChart extends Component {
 		}, [])
 		const maxRange = Math.max(...allCounts)
 
-		// If there are enough tweets in the maximum row that they'll overflow, make
-		// each tweet node smaller
-		let nodeWidth
+
+		let nodeWidth = TWEET_NODE_WIDTH
+		let nodeGutter = TWEET_NODE_GUTTER
 		if (maxRange * (TWEET_NODE_WIDTH + TWEET_NODE_GUTTER) > BAR_MAX_WIDTH) {
+			// If there are enough tweets in the maximum row that they'll overflow, make
+			// each tweet node smaller
 			nodeWidth = ((BAR_MAX_WIDTH + TWEET_NODE_GUTTER) / maxRange) - TWEET_NODE_GUTTER
-		} else {
-			nodeWidth = TWEET_NODE_WIDTH
+		}
+		if (maxRange > BAR_MAX_WIDTH / 3) {
+			// If there are *really* a lot of tweets, get rid of the gutter
+			nodeWidth = BAR_MAX_WIDTH / maxRange
+			nodeGutter = 0
 		}
 
 		const chartHeight = domainTicks.length * (ROW_HEIGHT + ROW_GUTTER)
@@ -123,6 +128,7 @@ export default class TweetMultiBarChart extends Component {
 							tweetsByCategory={d.tweetsByCategory}
 							y={i * (ROW_HEIGHT + ROW_GUTTER)}
 							nodeWidth={nodeWidth}
+							nodeGutter={nodeGutter}
 							rowGutter={ROW_GUTTER}
 							active={selectedRowIndex === null || selectedRowIndex === i}
 							onMouseOver={() => this.handleSelectRow(i)}
