@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 from politweets.models import Tweet
 from politweets.api.edge.utils import (
-    party_breakdown,
+    categories_breakdown,
     tweet_summary,
 )
 
@@ -27,9 +27,9 @@ class SummaryView(APIView):
         )
 
         return Response({
-            'past_day': party_breakdown(past_day_tweets, tweet_summary),
-            'past_week': party_breakdown(past_week_tweets, tweet_summary),
-            'past_month': party_breakdown(past_month_tweets, tweet_summary),
+            'past_day': categories_breakdown(past_day_tweets, tweet_summary),
+            'past_week': categories_breakdown(past_week_tweets, tweet_summary),
+            'past_month': categories_breakdown(past_month_tweets, tweet_summary),
         })
 
 

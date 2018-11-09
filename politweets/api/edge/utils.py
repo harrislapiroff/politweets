@@ -8,11 +8,15 @@ if TYPE_CHECKING:
     from django.db.models import QuerySet  # NOQA: F401
 
 
-def party_breakdown(tweets: 'QuerySet', func: callable) -> dict:
+def categories_breakdown(tweets: 'QuerySet', func: callable) -> dict:
     return {
         'democrats': func(tweets.filter(member__party=Member.DEMOCRAT)),
         'republicans': func(tweets.filter(member__party=Member.REPUBLICAN)),
         'independents': func(tweets.filter(member__party=Member.INDEPENDENT)),
+        'men': func(tweets.filter(member__gender='M')),
+        'women': func(tweets.filter(member__gender='F')),
+        'representatives': func(tweets.filter(member__chamber=Member.HOUSE)),
+        'senators': func(tweets.filter(member__chamber=Member.SENATE)),
     }
 
 
