@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { format } from 'date-fns'
 
 import { filledDateRange, ISOtoDate, sameDate, sameHour } from '~/utils/date.js'
+import { category } from '~/utils/prop-types.js'
 
 import BarChartRow from './BarChartRow.js'
 import {
@@ -14,21 +15,22 @@ import {
 import './index.sass'
 
 export default function TweetMultiBarChart({
-	data,
+	tweets,
 	startDate,
 	endDate,
+	categories,
 	tick,
 }) {
 	const domainTicks = filledDateRange(startDate, endDate, tick)
-	const categories = Object.keys(data).slice(0, 2) // For now we ignore "Independents"
 
 	/* Munge data into an array of this form:
 	 *
 	 * [
-	 *   [
-	 *     Date(2018, 11, 7, 2, 0),
-	 *     { 'democrats': 0, 'republicans': 5 }
-	 *   ],
+	 *   {
+	 *     date: Date(2018, 11, 7, 2, 0),
+	 *     label: 'Mon 9',
+	 *     tweetsByCategory: { category1: [...tweets...], category2: [... tweets ...] }
+	 *   ),
 	 *   ...
 	 * ]
 	 */
@@ -47,23 +49,26 @@ export default function TweetMultiBarChart({
 
 		// Compare dates appropriately for the tick
 		const cmpDates = tick === 'hour' ? sameHour : sameDate
-		const valuesByCategory = categories.reduce((accumulator, category) => {
-			// Find data matching the current category and time. If no data exists, set value to 0.
-			const dataForDate = data[category].find(x => cmpDates(ISOtoDate(x[tick]), t))
-			accumulator[category] = dataForDate ? dataForDate.count : 0
-			return accumulator
-		}, {})
+		// Get the tweets that belong in this tick row
+		const tweetsForTick = tweets.filter(tweet => cmpDates(ISOtoDate(tweet.time), t))
+		// Filter into an object sorted by category
+		const tweetsByCategory = categories.reduce(
+			(acc, cat) => Object.assign(
+				acc, { [cat.key]: tweetsForTick.filter(cat.tweetFilterFn) }
+			), {}
+		)
 
-		return [
+		return {
+			date: t,
 			label,
-			valuesByCategory
-		]
+			tweetsByCategory
+		}
 	})
 
 	// Calculate the maximum value of the range
 	const allCounts = dataRows.reduce((accumulator, dataPoint) => {
-		const counts = Object.keys(dataPoint[1]).map(category => {
-			return dataPoint[1][category]
+		const counts = categories.map(category => {
+			return dataPoint.tweetsByCategory[category.key].length
 		})
 		return accumulator.concat(counts)
 	}, [])
@@ -78,21 +83,26 @@ export default function TweetMultiBarChart({
 			preserveAspectRatio="xMidYMin meet"
 		>
 			{dataRows.map((d, i) => (
-				<BarChartRow
-					key={i}
-					label={d[0]}
-					data={d[1]}
-					y={i * (ROW_HEIGHT + ROW_GUTTER)}
-					max={maxRange}
-				/>
+					<BarChartRow
+						key={i}
+						label={d.label}
+						data={Object.keys(d.tweetsByCategory).reduce(
+							(acc, cat) => Object.assign(
+								acc, {[cat]: d.tweetsByCategory[cat].length}
+							), {}
+						)}
+						y={i * (ROW_HEIGHT + ROW_GUTTER)}
+						max={maxRange}
+					/>
 			))}
 		</svg>
 	)
 }
 
 TweetMultiBarChart.propTypes = {
-	data: PropTypes.object.isRequired,
+	tweets: PropTypes.array.isRequired,
 	startDate: PropTypes.instanceOf(Date).isRequired,
 	endDate: PropTypes.instanceOf(Date).isRequired,
+	categories: PropTypes.arrayOf(PropTypes.shape(category)),
 	tick: PropTypes.oneOf(['hour', 'day']).isRequired,
 }

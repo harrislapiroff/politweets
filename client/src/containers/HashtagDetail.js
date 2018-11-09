@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import TweetMultiBarChart from '~/components/TweetMultiBarChart/index.js'
 import ErrorBoundary from '~/components/ErrorBoundary.js'
 import { DATE_RANGE_OPTIONS, getDateRange } from '~/utils/date.js'
+import { DEMOCRATS, REPUBLICANS } from '~/utils/categories.js'
 
 import './HashtagDetail.sass'
 
@@ -14,7 +15,7 @@ export default class HashtagDetail extends Component {
 		super()
 		this.state = {
 			loading: true,
-			data: null,
+			tweets: null,
 		}
 	}
 
@@ -35,13 +36,12 @@ export default class HashtagDetail extends Component {
 		this.setState({ loading: true })
 		const requestUrl = this.props.api.replace('__PLACEHOLDER__', this.props.hashtag)
 		const response = await fetch(requestUrl)
-		const summaryData = await response.json()
-		this.setState({ loading: false, data: summaryData })
+		const hastagData = await response.json()
+		this.setState({ loading: false, tweets: hastagData })
 	}
 
 	render() {
-		const { data } = this.state
-		const dataForDateRange = data ? data[this.props.dateRange] : null
+		const { tweets } = this.state
 		const dateRange = getDateRange(this.props.dateRange)
 		const tick = this.props.dateRange === 'past_day' ? 'hour' : 'day'
 
@@ -55,13 +55,14 @@ export default class HashtagDetail extends Component {
 					<span className="hashtag-detail__title-hashtag">{this.props.hashtag}</span>{' '}
 					{this.state.loading && <span className="hashtag-detail__title-loading-indicator">Loading...</span>}
 				</h1>
-				{data && (
+				{tweets && (
 					<ErrorBoundary>
 						<TweetMultiBarChart
-							data={dataForDateRange}
+							tweets={tweets}
 							startDate={dateRange.start}
 							endDate={dateRange.end}
 							tick={tick}
+							categories={[DEMOCRATS, REPUBLICANS]}
 						/>
 					</ErrorBoundary>
 				)}
