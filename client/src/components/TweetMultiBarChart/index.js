@@ -66,7 +66,7 @@ export default class TweetMultiBarChart extends Component {
 			} else {
 				// If the date is the first or this is the first row of the chart
 				// include a day of the week in the label
-				label = ((t.getDate() === 1) || (idx === 0)) ? format(t, 'MMM D') : format(t, 'D')
+				label = ((t.getDate() === 1) || (idx === 0)) ? format(t, 'MMM D dd') : format(t, 'D dd')
 			}
 
 			// Compare dates appropriately for the tick
