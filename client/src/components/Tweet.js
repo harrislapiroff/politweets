@@ -14,7 +14,17 @@ export default function Tweet({ tweet, className }) {
 	if (member.party === 'R') partyClass = 'republicans'
 	return (
 		<div className={`tweet tweet--${className}`}>
-			<div className="tweet__user">
+			<a
+				className="tweet__user"
+				href={`https://twitter.com/${tweet.member.twitter}`}
+			>
+				<div className="tweet__avatar-container">
+					<img
+						className="tweet__avatar"
+						alt={`${member.full_name}`}
+						src={tweet.member.avatar}
+					/>
+				</div>
 				<div className="tweet__user-id">
 					<span className="tweet__user-name">{member.full_name}</span>{' '}
 					<span className="tweet__user-designation">
@@ -40,7 +50,7 @@ export default function Tweet({ tweet, className }) {
 				<div className="tweet__user-handle">
 					@{member.twitter}
 				</div>
-			</div>
+			</a>
 			<div className="tweet__text">
 				<TweetTextProcessor>{tweet.text}</TweetTextProcessor>
 			</div>

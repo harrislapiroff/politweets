@@ -63,6 +63,7 @@ class HashtagDetailView(APIView):
                 'state': tweet.member.state,
                 'district': tweet.member.district,
                 'twitter': tweet.member.twitter,
+                'avatar': tweet.original_data['user']['profile_image_url_https'],
             }
         } for tweet in hashtagged_tweets]
 
