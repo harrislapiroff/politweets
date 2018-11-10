@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 
 import TweetMultiBarChart from '~/components/TweetMultiBarChart/index.js'
 import Tweet from '~/components/Tweet.js'
+import Legend from '~/components/Legend.js'
 import ErrorBoundary from '~/components/ErrorBoundary.js'
 import { DATE_RANGE_OPTIONS, getDateRange } from '~/utils/date.js'
 import { tweetsBetweenDates } from '~/utils/tweetFiltering.js'
@@ -62,6 +63,10 @@ export default class HashtagDetail extends Component {
 									<span className="hashtag-detail__title-hashtag">{hashtag}</span>{' '}
 									{this.state.loading && <span className="hashtag-detail__title-loading-indicator">Loading...</span>}
 								</h1>
+								<Legend
+									categories={categories}
+									tweets={tweetsFiltered}
+								/>
 								<a
 									className="hashtag-detail__twitter-link"
 									href={`https://twitter.com/hashtag/${hashtag}`}

@@ -1,4 +1,5 @@
 @import '~/_variables.sass'
+@import '~/_mixins.sass'
 
 .tweet
 	font-size: 1.4rem
@@ -6,24 +7,8 @@
 	margin-bottom: 1rem
 	padding: 1rem
 	background-color: #FFF
-
-.tweet--democrats
-	border-left: 4px solid $color-democrat
-
-.tweet--republicans
-	border-left: 4px solid $color-republican
-
-.tweet--men
-	border-left: 4px solid $color-men
-
-.tweet--women
-	border-left: 4px solid $color-women
-
-.tweet--senators
-	border-left: 4px solid $color-senators
-
-.tweet--representatives
-	border-left: 4px solid $color-representatives
+	border-left: 4px solid #000
+	+category-variations(border-left-color)
 
 .tweet__user
 	margin-bottom: 0.5rem

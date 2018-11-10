@@ -1,0 +1,47 @@
+@import '~/_variables.sass'
+@import '~/_mixins.sass'
+
+.legend
+	margin-bottom: 1rem
+
+.legend__item
+	$square-size: 1rem
+	$line-height: 2rem
+	font-size: 1.4rem
+	line-height: $line-height
+	position: relative
+	padding-left: 1.5rem
+	&::before
+		display: block
+		content: ' '
+		background-color: #000
+		width: $square-size
+		height: $square-size
+		position: absolute
+		top: ($line-height - $square-size) / 2
+		left: 0
+
+.legend__item--democrats::before
+	background-color: $color-democrat
+
+.legend__item--republicans::before
+	background-color: $color-republican
+
+.legend__item--men::before
+	background-color: $color-men
+
+.legend__item--women::before
+	background-color: $color-women
+
+.legend__item--senators::before
+	background-color: $color-senators
+
+.legend__item--representatives::before
+	background-color: $color-representatives
+
+.legend__number
+	font-weight: bold
+
+.legend__category
+	font-weight: bold
+	+category-variations
