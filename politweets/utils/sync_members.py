@@ -18,20 +18,24 @@ def update_or_create_member(data: dict, chamber: str) -> Tuple[Member, bool]:
     else:
         party = Member.INDEPENDENT
 
+    defaults = {
+        'propublica_id': data['id'],
+        'first_name': data['first_name'],
+        'middle_name': data['middle_name'],
+        'last_name': data['last_name'],
+        'suffix': data['suffix'],
+        'date_of_birth': parse_date(data['date_of_birth']),
+        'gender': data['gender'],
+        'chamber': chamber,
+        'party': party,
+        'state': data['state'],
+        'twitter': data['twitter_account'],
+    }
+    if 'district' in data:
+        defaults['district'] = data['district']
+
     return Member.objects.update_or_create(
-        defaults={
-            'propublica_id': data['id'],
-            'first_name': data['first_name'],
-            'middle_name': data['middle_name'],
-            'last_name': data['last_name'],
-            'suffix': data['suffix'],
-            'date_of_birth': parse_date(data['date_of_birth']),
-            'gender': data['gender'],
-            'chamber': chamber,
-            'party': party,
-            'state': data['state'],
-            'twitter': data['twitter_account'],
-        },
+        defaults=defaults,
         propublica_id=data['id']
     )
 

@@ -36,6 +36,8 @@ class Member(models.Model):
     chamber = models.CharField(max_length=1, choices=CHAMBERS)
     party = models.CharField(max_length=1, choices=PARTIES)
     state = USStateField()
+    # district is a CharField because some reps are "at-large"
+    district = models.CharField(max_length=255, blank=True, null=True)
     twitter = models.CharField(max_length=255, blank=True, null=True)
 
     active = models.BooleanField(help_text='Still in office', default=True)

@@ -61,6 +61,7 @@ class HashtagDetailView(APIView):
                 'gender': tweet.member.gender,
                 'chamber': tweet.member.chamber,
                 'state': tweet.member.state,
+                'district': tweet.member.district,
                 'twitter': tweet.member.twitter,
             }
         } for tweet in hashtagged_tweets]
