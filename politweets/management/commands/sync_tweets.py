@@ -15,7 +15,7 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        for status, member, result in sync_all_tweets(overwrite=True):
+        for status, member, result in sync_all_tweets(overwrite=options['overwrite']):
             if status == SUCCESS:
                 self.stdout.write('Synced {} tweets from {} ({})'.format(
                     len(result),
