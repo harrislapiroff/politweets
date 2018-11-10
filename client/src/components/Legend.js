@@ -1,12 +1,30 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import LoadingBox from '~/components/LoadingBox.js'
 import { category } from '~/utils/prop-types.js'
 import { capitalize } from '~/utils/string.js'
 
 import './Legend.sass'
 
-export default function Legend({ categories, tweets }) {
+
+function LoadingLegend({ categories }) {
+	return (
+		<div className="legend">
+				{categories.map(cat => (
+					<div key={cat.key} className={`legend__item legend__item--${cat.key}`}>
+						<LoadingBox color="#DDD" />
+					</div>
+				))}
+		</div>
+	)
+}
+
+
+export default function Legend({ categories, tweets, loading }) {
+	// If it's loading, show the loading bars
+	if (loading) return <LoadingLegend categories={categories} />
+	// Otherwise render the real legend
 	return (
 		<div className="legend">
 			{categories.map(cat => (
@@ -23,5 +41,7 @@ export default function Legend({ categories, tweets }) {
 }
 
 Legend.propTypes = {
-	categories: PropTypes.arrayOf(PropTypes.shape(category))
+	loading: PropTypes.bool,
+	tweets: PropTypes.array,
+	categories: PropTypes.arrayOf(PropTypes.shape(category)),
 }

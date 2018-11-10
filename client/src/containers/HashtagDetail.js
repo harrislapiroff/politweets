@@ -44,7 +44,7 @@ export default class HashtagDetail extends Component {
 	}
 
 	render() {
-		const { tweets } = this.state
+		const { tweets, loading } = this.state
 		const { hashtag, categories } = this.props
 		const dateRange = getDateRange(this.props.dateRange)
 		const tick = this.props.dateRange === 'past_day' ? 'hour' : 'day'
@@ -54,60 +54,60 @@ export default class HashtagDetail extends Component {
 
 		return (
 			<div className="hashtag-detail">
-				{tweets && (
-					<Fragment>
-						<div className="hashtag-detail__specs">
-							<ErrorBoundary>
-								<h1 className="hashtag-detail__title">
-									<span className="hashtag-detail__title-octothorpe">#</span>
-									<span className="hashtag-detail__title-hashtag">{hashtag}</span>{' '}
-									{this.state.loading && <span className="hashtag-detail__title-loading-indicator">Loading...</span>}
-								</h1>
-								<Legend
-									categories={categories}
-									tweets={tweetsFiltered}
+				<div className="hashtag-detail__specs">
+					<ErrorBoundary>
+						<h1 className="hashtag-detail__title">
+							<span className="hashtag-detail__title-octothorpe">#</span>
+							<span className="hashtag-detail__title-hashtag">{hashtag}</span>{' '}
+						</h1>
+						<Legend
+							loading={loading}
+							categories={categories}
+							tweets={tweetsFiltered}
+						/>
+						<a
+							className="hashtag-detail__twitter-link"
+							href={`https://twitter.com/hashtag/${hashtag}`}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<strong>#{hashtag}</strong> on Twitter
+						</a>
+						<Link className="hashtag-detail__close" to="/" title="close">
+							&times;
+						</Link>
+					</ErrorBoundary>
+				</div>
+				<div className={'hashtag-detail__chart ' + (loading ? 'hashtag-detail__chart--shimmer' : '')}>
+					{tweets && (
+						<ErrorBoundary>
+							<TweetMultiBarChart
+								tweets={tweets}
+								startDate={dateRange.start}
+								endDate={dateRange.end}
+								tick={tick}
+								categories={categories}
+							/>
+						</ErrorBoundary>
+					)}
+				</div>
+				<div className={'hashtag-detail__tweets ' + (loading ? 'hashtag-detail__tweets--shimmer' : '')}>
+					{tweets && (
+						<ErrorBoundary>
+							{tweetsFiltered.map(t => (
+								<Tweet
+									key={t.id}
+									tweet={t}
+									className={cond(
+										categories.map(
+											c => [c.tweetFilterFn, always(c.key)]
+										)
+									)(t)}
 								/>
-								<a
-									className="hashtag-detail__twitter-link"
-									href={`https://twitter.com/hashtag/${hashtag}`}
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									<strong>#{hashtag}</strong> on Twitter
-								</a>
-								<Link className="hashtag-detail__close" to="/" title="close">
-									&times;
-								</Link>
-							</ErrorBoundary>
-						</div>
-						<div className="hashtag-detail__chart">
-							<ErrorBoundary>
-								<TweetMultiBarChart
-									tweets={tweets}
-									startDate={dateRange.start}
-									endDate={dateRange.end}
-									tick={tick}
-									categories={categories}
-								/>
-							</ErrorBoundary>
-						</div>
-						<div className="hashtag-detail__tweets">
-							<ErrorBoundary>
-								{tweetsFiltered.map(t => (
-									<Tweet
-										key={t.id}
-										tweet={t}
-										className={cond(
-											categories.map(
-												c => [c.tweetFilterFn, always(c.key)]
-											)
-										)(t)}
-									/>
-								))}
-							</ErrorBoundary>
-						</div>
-					</Fragment>
-				)}
+							))}
+						</ErrorBoundary>
+					)}
+				</div>
 			</div>
 		)
 	}

@@ -69,7 +69,18 @@
 	line-height: 2.5rem
 	margin: 0
 	margin-bottom: 1rem
+	overflow: hidden
+	text-overflow: ellipsis
 
 .hashtag-detail__title-loading-indicator
 	font-weight: normal
 	color: #999
+
+.hashtag-detail__chart--shimmer,
+.hashtag-detail__tweets--shimmer
+	animation-name: loadingBoxShimmer
+	animation-duration: 500ms
+	animation-iteration-count: infinite
+	animation-name: loadingBoxShimmer
+	animation-timing-function: ease-in
+	animation-direction: alternate
