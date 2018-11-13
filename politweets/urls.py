@@ -1,5 +1,4 @@
-from django.conf import settings
-from django.urls import path, re_path, include
+from django.urls import path, re_path
 from django.views.generic import TemplateView, RedirectView
 from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.views.decorators.cache import cache_page
@@ -25,10 +24,3 @@ urlpatterns = [
         TemplateView.as_view(template_name="index.html")
     )),
 ]
-
-
-if settings.DEBUG:
-    import debug_toolbar
-    urlpatterns = [
-        path('__debug__/', include(debug_toolbar.urls)),
-    ] + urlpatterns

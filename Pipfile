@@ -13,7 +13,7 @@ twitterapi = "*"
 django-rest-framework = "*"
 django-webpack-loader = "*"
 gunicorn = "*"
-whitenoise = "*"
+whitenoise = {extras = ["brotli"], version = "*"}
 factory-boy = "*"
 django-debug-toolbar = "*"
 

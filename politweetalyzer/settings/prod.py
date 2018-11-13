@@ -14,6 +14,9 @@ WEBPACK_LOADER = {
         }
 }
 
-MIDDLEWARE += [  # noqa: F405
+STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+MIDDLEWARE = MIDDLEWARE[0:1] + [  # noqa: F405
     'whitenoise.middleware.WhiteNoiseMiddleware',
-]
+] + MIDDLEWARE[1:]  # noqa: F405
