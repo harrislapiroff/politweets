@@ -73,8 +73,8 @@ export default class HashtagDetail extends Component {
 						>
 							<strong>#{hashtag}</strong> on Twitter
 						</a>
-						<Link className="hashtag-detail__close" to="/" title="close">
-							&times;
+						<Link className="hashtag-detail__overview-link" to="/" title="close">
+							Back to overview
 						</Link>
 					</ErrorBoundary>
 				</div>
