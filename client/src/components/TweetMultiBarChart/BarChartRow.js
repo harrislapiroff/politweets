@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import classNames from 'classnames'
 
 import {
 	LABEL_WIDTH,
@@ -52,7 +53,7 @@ export default function BarChartRow({
 				width={barMaxWidth}
 				height={barHeight * 2 + nodeGutter}
 			/>
-			<text className='bar-chart__row-label bar-chart__row-label--left' x={labelWidth} y={barHeight + 4}>
+		<text className='bar-chart__row-label bar-chart__row-label--left' x={labelWidth} y={barHeight + 5}>
 				{label}
 			</text>
 			<g
@@ -79,12 +80,17 @@ export default function BarChartRow({
 			</g>
 			<text
 				className='bar-chart__row-label bar-chart__row-label--right'
-				y={barHeight + 4}
+				y={barHeight + 5}
 				x={labelWidth + labelGutter + barMaxWidth + labelGutter}
 			>
 				{categories.map((c, i) => (
-					<tspan key={c} className={`bar-chart__text bar-chart__text--${c}`}>
-						{pad(tweetsByCategory[c].length, 2, NBSP)}{' '}
+					<tspan key={c} className={classNames({
+							'bar-chart__text': true,
+							[`bar-chart__text--${c}`]: tweetsByCategory[c].length !== 0,
+							'bar-chart__text--zero': tweetsByCategory[c].length === 0,
+						})}
+					>
+						{pad(tweetsByCategory[c].length, 3, NBSP)}{' '}
 					</tspan>
 				))}
 			</text>
