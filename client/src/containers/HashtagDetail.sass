@@ -1,9 +1,19 @@
 @import '~/_variables.sass'
 
+=link-style
+	text-decoration: none
+	color: $color-link
+	&:hover
+		color: $color-link-hover
+		text-decoration: underline
+
 .hashtag-detail
 	position: relative
 	display: grid
 	grid-template-columns: 19rem minmax(200px, auto) 34rem
+
+	font-size: 1.4rem
+	line-height: 2rem
 
 	@media(max-width: 700px)
 		display: block
@@ -20,33 +30,46 @@
 	position: sticky
 	top: 5rem
 
+.hashtag-detail__navigation
+	margin: 1.5rem 0
+
+.hashtag-detail__navigation-item
+	display: block
+	+link-style
+
+.hashtag-detail__navigation-item--active
+	color: #000
+	font-weight: bold
+
 .hashtag-detail__chart
 	grid-column-start: 2
 	@media(max-width: 700px)
 		margin-bottom: 1rem
 
-.hashtage-detail__tweets
+.hashtag-detail__tweets-link
+	display: block
+	padding: 1.5rem
+	text-align: center
+	+link-style
+
+.hashtag-detail__tweets
 	grid-column-start: 3
+	grid-column-end: 4
+
+.hashtag-detail__tweets--wide
+	grid-column-start: 2
 
 .hashtag-detail__twitter-link
 	display: block
 	margin: 0.5rem 0
 	font-size: 1.4rem
-	text-decoration: none
-	color: $color-link
-	&:hover
-		color: $color-link-hover
-		text-decoration: underline
+	+link-style
 
 .hashtag-detail__overview-link
 	display: block
 	margin: 0.5rem 0
 	font-size: 1.4rem
-	text-decoration: none
-	color: $color-link
-	&:hover
-		color: $color-link-hover
-		text-decoration: underline
+	+link-style
 
 .hashtag-detail__title
 	font-size: 2rem

@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
+import classNames from 'classnames'
 
 import { format } from 'date-fns'
 
@@ -7,13 +8,17 @@ import TweetTextProcessor from '~/components/TweetTextProcessor.js'
 
 import './Tweet.sass'
 
-export default function Tweet({ tweet, className }) {
+export default function Tweet({ tweet, className, large }) {
 	const member = tweet.member
 	let partyClass
 	if (member.party === 'D') partyClass = 'democrats'
 	if (member.party === 'R') partyClass = 'republicans'
 	return (
-		<div className={`tweet tweet--${className}`}>
+		<div className={classNames(
+			'tweet',
+			`tweet--${className}`,
+			{ 'tweet--large': large }
+		)}>
 			<a
 				className="tweet__user"
 				href={`https://twitter.com/${tweet.member.twitter}`}
@@ -51,7 +56,10 @@ export default function Tweet({ tweet, className }) {
 					@{member.twitter}
 				</div>
 			</a>
-			<div className="tweet__text">
+			<div className={classNames(
+				'tweet__text',
+				{ 'tweet__text--large': large }
+			)}>
 				<TweetTextProcessor>{tweet.text}</TweetTextProcessor>
 			</div>
 			<div className="tweet__footer">
@@ -70,8 +78,10 @@ export default function Tweet({ tweet, className }) {
 Tweet.propTypes = {
 	tweet: PropTypes.object.isRequired,
 	className: PropTypes.string,
+	large: PropTypes.bool,
 }
 
 Tweet.defaultProps = {
 	string: '',
+	large: false,
 }
