@@ -55,29 +55,31 @@ export default class HashtagDetail extends Component {
 		return (
 			<div className="hashtag-detail">
 				<div className="hashtag-detail__specs">
-					<ErrorBoundary>
-						<h1 className="hashtag-detail__title">
-							<span className="hashtag-detail__title-octothorpe">#</span>
-							<span className="hashtag-detail__title-hashtag">{hashtag}</span>{' '}
-						</h1>
-						<Legend
-							loading={loading}
-							categories={categories}
-							tweets={tweetsFiltered}
-						/>
-						<a
-							className="hashtag-detail__twitter-link"
-							href={`https://twitter.com/hashtag/${hashtag}`}
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							<strong>#{hashtag}</strong> on Twitter
-						</a>
-						<Link className="hashtag-detail__overview-link" to="/" title="close">
-							Back to overview
-						</Link>
-					</ErrorBoundary>
-				</div>
+					<div className="hashtag-detail__specs-inner">
+						<ErrorBoundary>
+							<h1 className="hashtag-detail__title">
+								<span className="hashtag-detail__title-octothorpe">#</span>
+								<span className="hashtag-detail__title-hashtag">{hashtag}</span>
+							</h1>
+							<Legend
+								loading={loading}
+								categories={categories}
+								tweets={tweetsFiltered}
+							/>
+							<a
+								className="hashtag-detail__twitter-link"
+								href={`https://twitter.com/hashtag/${hashtag}`}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								<strong>#{hashtag}</strong> on Twitter
+							</a>
+							<Link className="hashtag-detail__overview-link" to="/" title="close">
+								Back to overview
+							</Link>
+						</ErrorBoundary>
+					</div>{/* /.hashtag-detail__specs-inner */}
+				</div>{/* /.hashtag-detail__specs*/}
 				<div className={'hashtag-detail__chart ' + (loading ? 'hashtag-detail__chart--shimmer' : '')}>
 					{tweets && (
 						<ErrorBoundary>
