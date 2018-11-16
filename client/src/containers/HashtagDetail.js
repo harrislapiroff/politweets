@@ -1,4 +1,3 @@
-import { cond, always } from 'ramda'
 import React, { Component, Fragment } from 'react'
 import { Route, Switch } from 'react-router'
 import { Link, NavLink } from 'react-router-dom'
@@ -6,7 +5,7 @@ import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
 import TweetMultiBarChart from '~/components/TweetMultiBarChart/index.js'
-import Tweet from '~/components/Tweet.js'
+import TweetList from '~/components/TweetList.js'
 import Legend from '~/components/Legend.js'
 import ErrorBoundary from '~/components/ErrorBoundary.js'
 import { DATE_RANGE_OPTIONS, getDateRange } from '~/utils/date.js'
@@ -114,43 +113,38 @@ export default class HashtagDetail extends Component {
 									'hashtag-detail__chart': true,
 									'hashtag-detail__chart--shimmer': loading,
 								})}>
-									{tweets && (
-										<ErrorBoundary>
-											<TweetMultiBarChart
-												tweets={tweets}
-												startDate={dateRange.start}
-												endDate={dateRange.end}
-												tick={tick}
-												categories={categories}
-											/>
-										</ErrorBoundary>
-									)}
+									<ErrorBoundary>
+										{!!tweets && <TweetMultiBarChart
+											tweets={tweets}
+											startDate={dateRange.start}
+											endDate={dateRange.end}
+											tick={tick}
+											categories={categories}
+										/>}
+									</ErrorBoundary>
 								</div>
 								<div className={classNames({
 									'hashtag-detail__tweets': true,
 									'hashtag-detail__tweets--shimmer': loading,
 								})}>
-									{tweets && (
-										<ErrorBoundary>
-											{tweetsFiltered.slice(0, 3).map(t => (
-												<Tweet
-													key={t.id}
-													tweet={t}
-													className={cond(
-														categories.map(
-															c => [c.tweetFilterFn, always(c.key)]
-														)
-													)(t)}
+									<ErrorBoundary>
+										{!!tweets && (
+											<Fragment>
+												<TweetList
+													tweets={tweetsFiltered.slice(0, 3)}
+													classNameFn={(t) => categories.reduce(
+														(acc, cat) => cat.tweetFilterFn(t) ? `tweet--${cat.key}` : acc, ''
+													)}
 												/>
-											))}
-											<Link
-												className="hashtag-detail__tweets-link"
-												to={`/hashtag/${hashtag}/tweets`}
-											>
-												All <strong>#{hashtag}</strong> tweets
-											</Link>
-										</ErrorBoundary>
-									)}
+												<Link
+													className="hashtag-detail__tweets-link"
+													to={`/hashtag/${hashtag}/tweets`}
+												>
+													All <strong>#{hashtag}</strong> tweets
+												</Link>
+											</Fragment>
+										)}
+									</ErrorBoundary>
 								</div>
 							</Fragment>
 						)}
@@ -164,22 +158,16 @@ export default class HashtagDetail extends Component {
 								'hashtag-detail__tweets--wide': true,
 								'hashtag-detail__tweets--shimmer': loading,
 							})}>
-								{tweets && (
-									<ErrorBoundary>
-										{tweetsFiltered.map(t => (
-											<Tweet
-												key={t.id}
-												tweet={t}
-												className={cond(
-													categories.map(
-														c => [c.tweetFilterFn, always(c.key)]
-													)
-												)(t)}
-												large
-											/>
-										))}
-									</ErrorBoundary>
-								)}
+								<ErrorBoundary>
+									{!!tweets && (
+										<TweetList
+											tweets={tweetsFiltered}
+											classNameFn={(t) => categories.reduce(
+												(acc, cat) => cat.tweetFilterFn(t) ? `tweet--${cat.key}` : acc, ''
+											)}
+										/>
+									)}
+								</ErrorBoundary>
 							</div>
 						)}
 					/>

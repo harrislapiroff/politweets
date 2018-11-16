@@ -16,7 +16,7 @@ export default function Tweet({ tweet, className, large }) {
 	return (
 		<div className={classNames(
 			'tweet',
-			`tweet--${className}`,
+			className,
 			{ 'tweet--large': large }
 		)}>
 			<a
