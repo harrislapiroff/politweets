@@ -1,11 +1,21 @@
 {% load render_bundle from webpack_loader %}
+{% load staticfiles %}
 
 <!doctype html>
 <html>
+
 	<head>
+
 		<title>What is congress tweeting about?</title>
 		<meta name="viewport" content="width=device-width">
+
+		<meta property="og:title" content="What is congress tweeting about?" />
+		<meta property="og:type" content="website" />
+		<meta property="og:image" content="{% static 'cover.png' %}" />
+		<meta property="og:description" content="Explore the hashtags that members of congress are tweeting about." />
+
 	</head>
+
 	<body>
 		{# React app target #}
 		<div
@@ -15,4 +25,5 @@
 		></div>
 		{% render_bundle 'main' %}
 	</body>
+
 </html>
