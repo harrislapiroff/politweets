@@ -1,10 +1,11 @@
-import { cond, always } from 'ramda'
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import React, { Component, Fragment } from 'react'
+import { Route, Switch } from 'react-router'
+import { Link, NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import classNames from 'classnames'
 
 import TweetMultiBarChart from '~/components/TweetMultiBarChart/index.js'
-import Tweet from '~/components/Tweet.js'
+import TweetList from '~/components/TweetList.js'
 import Legend from '~/components/Legend.js'
 import ErrorBoundary from '~/components/ErrorBoundary.js'
 import { DATE_RANGE_OPTIONS, getDateRange } from '~/utils/date.js'
@@ -55,59 +56,123 @@ export default class HashtagDetail extends Component {
 		return (
 			<div className="hashtag-detail">
 				<div className="hashtag-detail__specs">
-					<ErrorBoundary>
-						<h1 className="hashtag-detail__title">
-							<span className="hashtag-detail__title-octothorpe">#</span>
-							<span className="hashtag-detail__title-hashtag">{hashtag}</span>{' '}
-						</h1>
-						<Legend
-							loading={loading}
-							categories={categories}
-							tweets={tweetsFiltered}
-						/>
-						<a
-							className="hashtag-detail__twitter-link"
-							href={`https://twitter.com/hashtag/${hashtag}`}
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							<strong>#{hashtag}</strong> on Twitter
-						</a>
-						<Link className="hashtag-detail__close" to="/" title="close">
-							&times;
-						</Link>
-					</ErrorBoundary>
-				</div>
-				<div className={'hashtag-detail__chart ' + (loading ? 'hashtag-detail__chart--shimmer' : '')}>
-					{tweets && (
+					<div className="hashtag-detail__specs-inner">
 						<ErrorBoundary>
-							<TweetMultiBarChart
-								tweets={tweets}
-								startDate={dateRange.start}
-								endDate={dateRange.end}
-								tick={tick}
+
+							<h1 className="hashtag-detail__title">
+								<span className="hashtag-detail__title-octothorpe">#</span>
+								<span className="hashtag-detail__title-hashtag">{hashtag}</span>
+							</h1>
+
+							<Legend
+								loading={loading}
 								categories={categories}
+								tweets={tweetsFiltered}
 							/>
+
+							<div className="hashtag-detail__navigation">
+								<NavLink
+									className="hashtag-detail__navigation-item"
+									activeClassName="hashtag-detail__navigation-item--active"
+									aria-current="true"
+									to={`/hashtag/${hashtag}`}
+									exact
+								>Overview</NavLink>
+								<NavLink
+									className="hashtag-detail__navigation-item"
+									activeClassName="hashtag-detail__navigation-item--active"
+									aria-current="true"
+									to={`/hashtag/${hashtag}/tweets`}
+									exact
+								>Tweets</NavLink>
+							</div>
+
+							<a
+								className="hashtag-detail__twitter-link"
+								href={`https://twitter.com/hashtag/${hashtag}`}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								<strong>#{hashtag}</strong> on Twitter
+							</a>
+
+							<Link className="hashtag-detail__overview-link" to="/" title="close">
+								Back to hashtags
+							</Link>
+
 						</ErrorBoundary>
-					)}
-				</div>
-				<div className={'hashtag-detail__tweets ' + (loading ? 'hashtag-detail__tweets--shimmer' : '')}>
-					{tweets && (
-						<ErrorBoundary>
-							{tweetsFiltered.map(t => (
-								<Tweet
-									key={t.id}
-									tweet={t}
-									className={cond(
-										categories.map(
-											c => [c.tweetFilterFn, always(c.key)]
-										)
-									)(t)}
-								/>
-							))}
-						</ErrorBoundary>
-					)}
-				</div>
+					</div>{/* /.hashtag-detail__specs-inner */}
+				</div>{/* /.hashtag-detail__specs*/}
+
+				<Switch>
+					<Route
+						path='/hashtag/:hashtag'
+						render={(props) => (
+							<Fragment>
+								<div className={classNames({
+									'hashtag-detail__chart': true,
+									'hashtag-detail__chart--shimmer': loading,
+								})}>
+									<ErrorBoundary>
+										{!!tweets && <TweetMultiBarChart
+											tweets={tweets}
+											startDate={dateRange.start}
+											endDate={dateRange.end}
+											tick={tick}
+											categories={categories}
+										/>}
+									</ErrorBoundary>
+								</div>
+								<div className={classNames({
+									'hashtag-detail__tweets': true,
+									'hashtag-detail__tweets--shimmer': loading,
+								})}>
+									<ErrorBoundary>
+										{!!tweets && (
+											<Fragment>
+												<TweetList
+													tweets={tweetsFiltered.slice(0, 3)}
+													classNameFn={(t) => categories.reduce(
+														(acc, cat) => cat.tweetFilterFn(t) ? `tweet--${cat.key}` : acc, ''
+													)}
+												/>
+												<Link
+													className="hashtag-detail__tweets-link"
+													to={`/hashtag/${hashtag}/tweets`}
+												>
+													All <strong>#{hashtag}</strong> tweets
+												</Link>
+											</Fragment>
+										)}
+									</ErrorBoundary>
+								</div>
+							</Fragment>
+						)}
+						exact
+					/>
+					<Route
+						path='/hashtag/:hashtag/tweets'
+						render={(props) => (
+							<div className={classNames({
+								'hashtag-detail__tweets': true,
+								'hashtag-detail__tweets--wide': true,
+								'hashtag-detail__tweets--shimmer': loading,
+							})}>
+								<ErrorBoundary>
+									{!!tweets && (
+										<TweetList
+											tweets={tweetsFiltered}
+											classNameFn={(t) => categories.reduce(
+												(acc, cat) => cat.tweetFilterFn(t) ? `tweet--${cat.key}` : acc, ''
+											)}
+										/>
+									)}
+								</ErrorBoundary>
+							</div>
+						)}
+					/>
+				</Switch>
+
 			</div>
 		)
 	}

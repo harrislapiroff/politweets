@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import HashtagList from '~/components/HashtagList.js'
 import ErrorBoundary from '~/components/ErrorBoundary.js'
@@ -56,21 +56,26 @@ class App extends Component {
 						onCategoryChange={this.handleCategoryChange}
 						onDateRangeChange={this.handleDateRangeChange}
 					/>
-
-					<div className="split-pane">
-						{categorySet.categories.map(cat => (
-							<div className="split-pane__column" key={cat.key}>
-								<ErrorBoundary>
-									<HashtagList
-										hashtags={this.state.loading ? [] : dataForCurrentRange[cat.key].popular_hashtags}
-										category={cat}
-										loading={this.state.loading}
-									/>
-								</ErrorBoundary>
-							</div>
-						))}
-					</div>
-					<ErrorBoundary>
+					<Switch>
+						<Route
+							path="/"
+							render={(props) => (
+								<div className="split-pane">
+									{categorySet.categories.map(cat => (
+										<div className="split-pane__column" key={cat.key}>
+											<ErrorBoundary>
+												<HashtagList
+													hashtags={this.state.loading ? [] : dataForCurrentRange[cat.key].popular_hashtags}
+													category={cat}
+													loading={this.state.loading}
+												/>
+											</ErrorBoundary>
+										</div>
+									))}
+								</div>
+							)}
+							exact
+						/>
 						<Route
 							path="/hashtag/:hashtag"
 							render={(props) => (
@@ -82,7 +87,7 @@ class App extends Component {
 								/>
 							)}
 						/>
-					</ErrorBoundary>
+					</Switch>
 				</div>
 			</BrowserRouter>
 		)
