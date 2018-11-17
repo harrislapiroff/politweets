@@ -128,22 +128,22 @@ export default class HashtagDetail extends Component {
 									'hashtag-detail__tweets--shimmer': loading,
 								})}>
 									<ErrorBoundary>
-										{!!tweets && (
-											<Fragment>
-												<TweetList
-													tweets={tweetsFiltered.slice(0, 3)}
-													classNameFn={(t) => categories.reduce(
-														(acc, cat) => cat.tweetFilterFn(t) ? `tweet--${cat.key}` : acc, ''
-													)}
-												/>
+										<Fragment>
+											<TweetList
+												tweets={tweetsFiltered.slice(0, 3)}
+												classNameFn={(t) => categories.reduce(
+													(acc, cat) => cat.tweetFilterFn(t) ? `tweet--${cat.key}` : acc, ''
+												)}
+											/>
+											{tweetsFiltered.length > 3 && (
 												<Link
 													className="hashtag-detail__tweets-link"
 													to={`/hashtag/${hashtag}/tweets`}
 												>
 													All <strong>#{hashtag}</strong> tweets
 												</Link>
-											</Fragment>
-										)}
+											)}
+										</Fragment>
 									</ErrorBoundary>
 								</div>
 							</Fragment>
@@ -159,14 +159,12 @@ export default class HashtagDetail extends Component {
 								'hashtag-detail__tweets--shimmer': loading,
 							})}>
 								<ErrorBoundary>
-									{!!tweets && (
-										<TweetList
-											tweets={tweetsFiltered}
-											classNameFn={(t) => categories.reduce(
-												(acc, cat) => cat.tweetFilterFn(t) ? `tweet--${cat.key}` : acc, ''
-											)}
-										/>
-									)}
+									<TweetList
+										tweets={tweetsFiltered}
+										classNameFn={(t) => categories.reduce(
+											(acc, cat) => cat.tweetFilterFn(t) ? `tweet--${cat.key}` : acc, ''
+										)}
+									/>
 								</ErrorBoundary>
 							</div>
 						)}
