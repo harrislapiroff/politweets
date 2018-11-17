@@ -8,17 +8,21 @@ import TweetTextProcessor from '~/components/TweetTextProcessor.js'
 
 import './Tweet.sass'
 
-export default function Tweet({ tweet, className, large }) {
+const Tweet = React.forwardRef(({ tweet, className, large, ...props }, ref) => {
 	const member = tweet.member
 	let partyClass
 	if (member.party === 'D') partyClass = 'democrats'
 	if (member.party === 'R') partyClass = 'republicans'
 	return (
-		<div className={classNames(
-			'tweet',
-			className,
-			{ 'tweet--large': large }
-		)}>
+		<div
+			className={classNames(
+				'tweet',
+				className,
+				{ 'tweet--large': large }
+			)}
+			ref={ref}
+			{...props}
+		>
 			<a
 				className="tweet__user"
 				href={`https://twitter.com/${tweet.member.twitter}`}
@@ -73,7 +77,7 @@ export default function Tweet({ tweet, className, large }) {
 			</div>
 		</div>
 	)
-}
+})
 
 Tweet.propTypes = {
 	tweet: PropTypes.object.isRequired,
@@ -85,3 +89,5 @@ Tweet.defaultProps = {
 	string: '',
 	large: false,
 }
+
+export default Tweet
