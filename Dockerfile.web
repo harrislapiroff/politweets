@@ -11,7 +11,7 @@ RUN pipenv install --deploy --system
 
 COPY ./politweetalyzer /app/django/politweetalyzer
 COPY ./politweets /app/django/politweets
-COPY ./client /app/django/client
+COPY ./client/dist /app/django/client/dist
 COPY ./manage.py /app/django/
 COPY ./scripts /app/django/scripts
 
