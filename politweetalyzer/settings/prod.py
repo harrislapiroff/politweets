@@ -20,3 +20,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MIDDLEWARE = MIDDLEWARE[0:1] + [  # noqa: F405
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ] + MIDDLEWARE[1:]  # noqa: F405
+
+# 24 hour caching
+WHITENOISE_MAX_AGE = 86400
