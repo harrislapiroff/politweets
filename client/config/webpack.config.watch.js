@@ -84,7 +84,7 @@ module.exports = {
 			{
 				test: /\.(js|jsx)$/,
 				include: paths.appSrc,
-				loader: require.resolve('babel-loader'),
+				loader: 'awesome-typescript-loader',
 			},
 			// File loader copies files to media folder. Make sure to keep `exclude` list up-to-date
 			{

@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "outDir": "./dist/",
+        "sourceMap": true,
+        "noImplicitAny": true,
+        "module": "commonjs",
+        "target": "ES2018",
+        "jsx": "react",
+        "allowJs": true,
+        "baseUrl": ".",
+        "paths": {
+          "~/*": ["src/*"]
+        }
+    },
+    "include": [
+        "./src/**/*"
+    ],
+    "awesomeTypescriptLoaderOptions": {
+      "useBabel": true,
+      "useCache": true,
+      "useTranspileModule": true,
+    }
+}

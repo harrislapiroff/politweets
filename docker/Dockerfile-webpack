@@ -2,6 +2,7 @@ FROM node:10.13.0-alpine
 WORKDIR /app/node/
 
 COPY ./client/package*.json /app/node/
+COPY ./client/tsconfig.json /app/node/
 RUN npm install
 
 COPY ./client/config/ /app/node/config

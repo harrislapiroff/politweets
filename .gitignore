@@ -2,4 +2,5 @@
 .env
 __pycache__
 /client/dist/
+/client/.awcache/
 /politweetalyzer/settings/local.py
