@@ -13,30 +13,32 @@ export default class TweetTextProcessor extends Component {
 		// First off, let's decode HTML entities
 		const decodedString = this.entities.decode(string)
 
-		let lastStringStart = 0 // A cursor for the match loop
-		const reactNodes = []   // The destination for our react nodes
-		Autolinker.link(decodedString, {
+		const matches = Autolinker.parse(decodedString, {
 			hashtag: 'twitter',
 			mention: 'twitter',
-			replaceFn: (match) => {
-				// First add the string node between the last match and the current one
-				reactNodes.push(decodedString.slice(lastStringStart, match.offset))
-				// Next, process the current match
-				reactNodes.push(
-					<a
-						href={match.getAnchorHref()}
-						className="tweet__link"
-						rel="noopener noreferrer"
-						target="_blank"
-						key={match.offset}
-					>
-						{match.getAnchorText()}
-					</a>
-				)
-				// Update the cursor
-				lastStringStart = match.offset + match.matchedText.length
-			}
 		})
+
+		let lastStringStart = 0 // A cursor for the match loop
+		const reactNodes = matches.reduce((reactNodes, match) => {
+			// First add the string node between the last match and the current one
+			reactNodes.push(decodedString.slice(lastStringStart, match.offset))
+			// Next, process the current match
+			reactNodes.push(
+				<a
+					href={match.getAnchorHref()}
+					className="tweet__link"
+					rel="noopener noreferrer"
+					target="_blank"
+					key={match.offset}
+				>
+					{match.getAnchorText()}
+				</a>
+			)
+			// Update the cursor
+			lastStringStart = match.offset + match.matchedText.length
+			return reactNodes
+		}, [])
+
 		// Add remaining stringy bit to the node list, if any
 		reactNodes.push(decodedString.slice(lastStringStart))
 		return reactNodes
