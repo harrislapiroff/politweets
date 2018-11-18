@@ -38,9 +38,9 @@ class Command(BaseCommand):
                     )
                     return
 
-                if result.exception.status_code == 401:
-                    self.stderr.write(
-                        'Encountered 401 Unauthorized. Are your Twitter API '
-                        'credentials correct? Halting sync...'
-                    )
-                    return
+                # if result.exception.status_code == 401:
+                #     self.stderr.write(
+                #         'Encountered 401 Unauthorized. Are your Twitter API '
+                #         'credentials correct? Halting sync...'
+                #     )
+                #     return
