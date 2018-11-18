@@ -1,4 +1,6 @@
 import datetime
+from collections import namedtuple
+from typing import List
 
 from django.conf import settings
 from TwitterAPI import TwitterAPI
@@ -17,7 +19,14 @@ api = TwitterAPI(
 )
 
 
-def sync_twitter_account(member: Member, overwrite: bool = False):
+Result = namedtuple(
+    'Result',
+    ['status', 'member', 'exception', 'tweets'],
+    defaults={'exception': None, 'tweets': None}
+)
+
+
+def sync_twitter_account(member: Member, overwrite: bool = False) -> List[Tweet]:
     """
     Sync twitter accounts for every member in the database. If overwrite is
     True, it will delete and recreate up the most recent 200 tweets from that
@@ -69,10 +78,10 @@ def sync_all_tweets(overwrite: bool = False):
     members = Member.objects.filter(twitter__isnull=False, active=True)
     for member in members:
         try:
-            result = sync_twitter_account(member, overwrite=overwrite)
+            tweets = sync_twitter_account(member, overwrite=overwrite)
         except Exception as e:
             # An exception should not nuke the whole process. Just make a note
             # of the particular exception and move on
-            yield (ERROR, member, e)
+            yield Result(ERROR, member, exception=e)
         else:
-            yield (SUCCESS, member, result)
+            yield Result(SUCCESS, member, tweets=tweets)
