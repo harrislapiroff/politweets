@@ -1,5 +1,6 @@
 from django.contrib.postgres.fields import JSONField
 from django.db import models
+from django.db.models import F, Func, Value
 from localflavor.us.models import USStateField
 
 
@@ -93,6 +94,26 @@ class TweetQuerySet(models.QuerySet):
         keyword = 'text__iregex' if not case_sensitive else 'text__regex'
         value = RE_HASHTAG_FORMAT.format(hashtag)
         return self.filter(**{keyword: value})
+
+    def stub_values(self):
+        """
+        Return a QuerySet of renamed values. This restricts the query to a
+        minimal set of necessary values
+        """
+        return self.values(
+            'time',
+            tid=F('twitter_tweet_id'),
+            party=F('member__party'),
+            chamber=F('member__chamber'),
+            gender=F('member__gender'),
+            hashtags=Func(
+                F('original_data'),
+                Value('entities'),
+                Value('hashtags'),
+                function='jsonb_extract_path'
+            ),
+            stub=Value(0, models.BooleanField())
+        )
 
 
 class Tweet(models.Model):

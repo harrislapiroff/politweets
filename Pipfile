@@ -10,12 +10,13 @@ dj-database-url = "*"
 "psycopg2" = "*"
 requests = "*"
 twitterapi = "*"
-django-rest-framework = "*"
+djangorestframework = "*"
 django-webpack-loader = "*"
 gunicorn = "*"
-whitenoise = {extras = ["brotli"], version = "*"}
+whitenoise = {extras = ["brotli"],version = "*"}
 factory-boy = "*"
 django-debug-toolbar = "*"
+coreapi = "*"
 
 [dev-packages]
 ipdb = "*"

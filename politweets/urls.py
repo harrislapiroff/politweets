@@ -15,6 +15,11 @@ urlpatterns = [
         name='api_summary'
     ),
     path(
+        'api/edge/tweets/',
+        views.tweet_list_view,
+        name='api_tweet_list'
+    ),
+    path(
         'api/edge/hashtag/<hashtag>/',
         views.hashtag_view,
         name='api_hashtag'
