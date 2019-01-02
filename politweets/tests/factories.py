@@ -13,7 +13,7 @@ class MemberFactory(DjangoModelFactory):
     party = Member.DEMOCRAT
     state = 'CA'
     twitter = 'twitter'
-    active = True
+    session = 115
 
     class Meta:
         model = Member
