@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 
 from politweets.utils.sync_members import sync_members_from_propublica
+from politweets.utils.congress import current_congress_session
 
 
 class Command(BaseCommand):
@@ -22,20 +23,25 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         api_base = options['api_base']
         api_key = options['api_key']
+        current_session = current_congress_session()
 
         senators = list(sync_members_from_propublica(
-            '{}{}'.format(api_base, '115/senate/members.json'),
+            '{}{}{}'.format(api_base, current_session, '/senate/members.json'),
             api_key
         ))
         representatives = list(sync_members_from_propublica(
-            '{}{}'.format(api_base, '115/house/members.json'),
+            '{}{}{}'.format(api_base, current_session, '/house/members.json'),
             api_key
         ))
 
-        new_senators = list(filter(lambda x: x[1] is True, senators))
-        new_representatives = list(filter(lambda x: x[1] is True, representatives))
-        up_senators = list(filter(lambda x: x[1] is False, senators))
-        up_representatives = list(filter(lambda x: x[1] is False, representatives))
+        new_senators = list(
+            filter(lambda x: x[1] is True, senators))
+        new_representatives = list(
+            filter(lambda x: x[1] is True, representatives))
+        up_senators = list(
+            filter(lambda x: x[1] is False, senators))
+        up_representatives = list(
+            filter(lambda x: x[1] is False, representatives))
 
         self.stdout.write('Synced:')
         self.stdout.write(

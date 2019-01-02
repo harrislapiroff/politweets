@@ -6,6 +6,7 @@ from django.conf import settings
 from TwitterAPI import TwitterAPI
 
 from politweets.models import Tweet, Member
+from politweets.utils.congress import current_congress_session
 
 SUCCESS = 'Success'
 ERROR = 'Error'
@@ -75,8 +76,11 @@ def sync_twitter_account(member: Member, overwrite: bool = False) -> List[Tweet]
 
 
 def sync_all_tweets(overwrite: bool = False):
-    members = Member.objects.filter(twitter__isnull=False, active=True)
-    for member in members:
+    current_members = Member.objects.filter(
+        twitter__isnull=False,
+        session=current_congress_session()
+    )
+    for member in current_members:
         try:
             tweets = sync_twitter_account(member, overwrite=overwrite)
         except Exception as e:

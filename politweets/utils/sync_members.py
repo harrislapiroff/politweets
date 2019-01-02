@@ -3,6 +3,7 @@ import datetime
 from typing import Tuple, Iterable
 
 from politweets.models import Member
+from politweets.utils.congress import current_congress_session
 
 
 parse_date = lambda d: datetime.date(*map(int, d.split('-')))
@@ -18,6 +19,8 @@ def update_or_create_member(data: dict, chamber: str) -> Tuple[Member, bool]:
     else:
         party = Member.INDEPENDENT
 
+    current_session = current_congress_session()
+
     defaults = {
         'propublica_id': data['id'],
         'first_name': data['first_name'],
@@ -30,13 +33,15 @@ def update_or_create_member(data: dict, chamber: str) -> Tuple[Member, bool]:
         'party': party,
         'state': data['state'],
         'twitter': data['twitter_account'],
+        'session': current_session,
     }
     if 'district' in data:
         defaults['district'] = data['district']
 
     return Member.objects.update_or_create(
         defaults=defaults,
-        propublica_id=data['id']
+        propublica_id=data['id'],
+        session=current_session,
     )
 
 

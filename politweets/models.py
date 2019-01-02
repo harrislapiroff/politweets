@@ -7,6 +7,19 @@ RE_HASHTAG_FORMAT = r'(^|\s)#{}\M'
 
 
 class Member(models.Model):
+    """
+    Represents a single term from a current member of congress.
+
+    Note: the name of this model is slightly misleading and we may wish to
+    rename or restructure it in the future. This represents all of the data
+    for a member during a single term of congress. If a congressperson served
+    multiple terms, there will be a corresponding Member object for each term
+    that they served.
+
+    Aggregations for a single individual could be made by comparing across
+    unique `propublica_id`s
+    """
+
     SENATE = 'S'
     HOUSE = 'H'
     CHAMBERS = (
@@ -40,7 +53,7 @@ class Member(models.Model):
     district = models.CharField(max_length=255, blank=True, null=True)
     twitter = models.CharField(max_length=255, blank=True, null=True)
 
-    active = models.BooleanField(help_text='Still in office', default=True)
+    session = models.PositiveIntegerField()
 
     def get_full_name(self):
         if self.middle_name:
@@ -59,6 +72,7 @@ class Member(models.Model):
             models.Index(fields=['party']),
             models.Index(fields=['chamber']),
             models.Index(fields=['gender']),
+            models.Index(fields=['session']),
         ]
 
 
