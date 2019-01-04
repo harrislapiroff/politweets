@@ -67,6 +67,16 @@ class Member(models.Model):
             self.last_name
         )
 
+    def get_latest_tweet(self):
+        """
+        A hacky method to get the latest tweet from either this Member or a
+        previous Member with the same ProPublica ID. This is necessary until
+        such time that we separate this model into Term and Member models as
+        described in the model's docstring
+        """
+        return Tweet.objects.filter(member__propublica_id=self.propublica_id)\
+                            .latest()
+
     class Meta:
         indexes = [
             models.Index(fields=['party']),

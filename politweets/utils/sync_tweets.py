@@ -43,7 +43,7 @@ def sync_twitter_account(member: Member, overwrite: bool = False) -> List[Tweet]
 
     if not overwrite:
         try:
-            most_recent_tweet = member.tweets.latest()
+            most_recent_tweet = member.get_latest_tweet()
             params['since_id'] = most_recent_tweet.twitter_tweet_id
         except Tweet.DoesNotExist:
             pass
