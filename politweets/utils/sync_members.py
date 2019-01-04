@@ -27,7 +27,6 @@ def update_or_create_member(data: dict, chamber: str) -> Tuple[Member, bool]:
         'middle_name': data['middle_name'],
         'last_name': data['last_name'],
         'suffix': data['suffix'],
-        'date_of_birth': parse_date(data['date_of_birth']),
         'gender': data['gender'],
         'chamber': chamber,
         'party': party,
@@ -35,8 +34,12 @@ def update_or_create_member(data: dict, chamber: str) -> Tuple[Member, bool]:
         'twitter': data['twitter_account'],
         'session': current_session,
     }
+
     if 'district' in data:
         defaults['district'] = data['district']
+
+    if data['date_of_birth'] != '':
+        defaults['date_of_birth'] = parse_date(data['date_of_birth'])
 
     return Member.objects.update_or_create(
         defaults=defaults,
